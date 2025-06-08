@@ -1,4 +1,4 @@
-name: Check softare version consistency for citation purposes
+name: Check software version consistency for citation purposes
 
 on:
   push:
@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run check-software-version-for-citation
-        uses: willynilly/check-software-version-for-citation@v1.0.0
+      - name: Run version-consistency
+        uses: willynilly/version-consistency@v1.0.0
         with:
           event_name: ${{ github.event_name }}
           ref: ${{ github.ref }}
