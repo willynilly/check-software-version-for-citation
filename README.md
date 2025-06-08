@@ -1,5 +1,5 @@
 
-# 🚀 check-software-version-for-citation
+# 🚀 version-consistency
 
 Automatically ensures your GitHub tag or release version matches the version declared in your project's key metadata files.
 
@@ -63,7 +63,7 @@ Helps ensure:
 ## 🛠 How to use
 
 ```yaml
-uses: your-org/check-software-version-for-citation@v1
+uses: your-org/version-consistency@v1
 with:
   event_name: ${{ github.event_name }}
   ref: ${{ github.ref }}
@@ -133,6 +133,27 @@ on:
 📖 setup.py version: 1.2.3
 ✅ All versions match!
 ```
+
+---
+
+## 🔍 Comparisons with similar tools
+
+| Tool / Action | Scope / Limitations |
+|---------------|--------------------|
+| [`check-version`](https://github.com/marketplace/actions/check-version) | Typically compares only `package.json` or `pyproject.toml` to Git tag |
+| [`validate-version-tag-action`](https://github.com/marketplace/actions/validate-version-tag-action) | Focused on NPM (`package.json` only), no support for Python or metadata files |
+| [`python-semantic-release`](https://python-semantic-release.readthedocs.io/) | Automated release tool — not designed for cross-file version consistency checking |
+| `check-tag-version` (various community actions) | Usually limited to one file — no multi-ecosystem, no citation support |
+
+✅ **`version-consistency` is currently the only GitHub Action that provides:**
+
+- Canonical **PEP 440 tag version parsing**
+- Cross-ecosystem validation:
+    - Python (`pyproject.toml`, `setup.py`)
+    - JavaScript (`package.json`)
+    - Citation / metadata (`CITATION.cff`, `codemeta.json`, `.zenodo.json`)
+- Ability to **block incorrect releases** directly in GitHub CI
+- Lightweight, non-invasive — designed to fit **any workflow**
 
 ---
 
