@@ -63,26 +63,34 @@ Helps ensure:
 ## 🛠 How to use
 
 ```yaml
-uses: willynilly/version-consistency@v1.0.0
-with:
-  event_name: ${{ github.event_name }}
-  ref: ${{ github.ref }}
-  release_tag: ${{ github.event.release.tag_name }}
 
-  check_pyproject_toml: true
-  pyproject_toml_path: python/pyproject.toml
+jobs:
+  check-version:
+    name: Check version consistency
+    runs-on: ubuntu-latest
 
-  check_codemeta_json: true
-  codemeta_json_path: metadata/codemeta.json
+    steps:
+      - name: Run version-consistency
+        uses: willynilly/version-consistency@v1.0.0
+        with:
+          event_name: ${{ github.event_name }}
+          ref: ${{ github.ref }}
+          release_tag: ${{ github.event.release.tag_name }}
 
-  check_zenodo_json: true
-  zenodo_json_path: metadata/.zenodo.json
-
-  check_package_json: true
-  package_json_path: web/package.json
-
-  check_setup_py: true
-  setup_py_path: python/setup.py
+          check_pyproject_toml: true
+          pyproject_toml_path: python/pyproject.toml
+        
+          check_codemeta_json: true
+          codemeta_json_path: metadata/codemeta.json
+        
+          check_zenodo_json: true
+          zenodo_json_path: metadata/.zenodo.json
+        
+          check_package_json: true
+          package_json_path: web/package.json
+        
+          check_setup_py: true
+          setup_py_path: python/setup.py
 ```
 
 ---
