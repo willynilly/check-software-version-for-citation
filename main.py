@@ -161,7 +161,7 @@ def main():
                 failures.append(f"{args.package_json_path or 'package.json'}")
         except Exception as e:
             print(f"⚠️ Could not parse tag version as SemVer: {e}")
-            failures.append("{args.package_json_path or 'package.json'} (parse error)")
+            failures.append(f"{args.package_json_path or 'package.json'} (parse error)")
 
     # codemeta.json
     if args.check_codemeta_json.lower() == 'true':
