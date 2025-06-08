@@ -79,18 +79,19 @@ jobs:
 
           check_pyproject_toml: true
           pyproject_toml_path: python/pyproject.toml
-        
+
           check_codemeta_json: true
           codemeta_json_path: metadata/codemeta.json
-        
+
           check_zenodo_json: true
           zenodo_json_path: metadata/.zenodo.json
-        
+
           check_package_json: true
           package_json_path: web/package.json
-        
+
           check_setup_py: true
           setup_py_path: python/setup.py
+
 ```
 
 ---
