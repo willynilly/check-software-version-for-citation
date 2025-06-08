@@ -1,9 +1,11 @@
-name: check-same-software-version-for-citation
+
+name: check-software-version-for-citation
 description: >
   Ensures that your GitHub tag/release version matches the version declared in CITATION.cff,
-  pyproject.toml, codemeta.json, .zenodo.json, package.json, and setup.py
+  pyproject.toml, codemeta.json, .zenodo.json, package.json, and setup.py.
+  Canonical tag version is parsed using PEP 440.
 
-author: Your Name <your-email@example.com>
+author: Will Riley <wanderingwill@gmail.com>
 
 inputs:
   cff_path:
@@ -73,24 +75,10 @@ runs:
 
     - name: Install dependencies
       run: |
-        pip install pyyaml tomli
+        pip install pyyaml tomli packaging semver
       shell: bash
 
     - name: Run version check
       run: |
-        python scripts/check_version.py \
-          --cff-path "${{ inputs.cff_path }}" \
-          --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" \
-          --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" \
-          --check-codemeta-json "${{ inputs.check_codemeta_json }}" \
-          --codemeta-json-path "${{ inputs.codemeta_json_path }}" \
-          --check-zenodo-json "${{ inputs.check_zenodo_json }}" \
-          --zenodo-json-path "${{ inputs.zenodo_json_path }}" \
-          --check-package-json "${{ inputs.check_package_json }}" \
-          --package-json-path "${{ inputs.package_json_path }}" \
-          --check-setup-py "${{ inputs.check_setup_py }}" \
-          --setup-py-path "${{ inputs.setup_py_path }}" \
-          --event-name "${{ inputs.event_name }}" \
-          --ref "${{ inputs.ref }}" \
-          --release-tag "${{ inputs.release_tag }}"
+        python scripts/check_version.py           --cff-path "${{ inputs.cff_path }}"           --check-pyproject-toml "${{ inputs.check_pyproject_toml }}"           --pyproject-toml-path "${{ inputs.pyproject_toml_path }}"           --check-codemeta-json "${{ inputs.check_codemeta_json }}"           --codemeta-json-path "${{ inputs.codemeta_json_path }}"           --check-zenodo-json "${{ inputs.check_zenodo_json }}"           --zenodo-json-path "${{ inputs.zenodo_json_path }}"           --check-package-json "${{ inputs.check_package_json }}"           --package-json-path "${{ inputs.package_json_path }}"           --check-setup-py "${{ inputs.check_setup_py }}"           --setup-py-path "${{ inputs.setup_py_path }}"           --event-name "${{ inputs.event_name }}"           --ref "${{ inputs.ref }}"           --release-tag "${{ inputs.release_tag }}"
       shell: bash
