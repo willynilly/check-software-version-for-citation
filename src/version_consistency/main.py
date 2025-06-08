@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
-import sys
-import yaml
-import tomli
 import json
 import re
 import subprocess
-from packaging.version import Version as PEP440Version
+import sys
+
 import semver
+import tomli
+import yaml
+from packaging.version import Version as PEP440Version
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Check tag/release version vs files with canonical PEP 440 tag version")
@@ -152,16 +153,20 @@ def main():
     if args.check_package_json.lower() == 'true':
         package_version = extract_package_json_version(args.package_json_path)
         try:
-            tag_semver = parse_version_semver(f"{tag_version_pep440.major}.{tag_version_pep440.minor}.{tag_version_pep440.micro}")
-            if tag_version_pep440.is_prerelease:
-                tag_semver = semver.Version.parse(f"{tag_semver.major}.{tag_semver.minor}.{tag_semver.patch}-{tag_version_pep440.pre[0]}.{tag_version_pep440.pre[1]}")
+            tag_semver_str = f"{tag_version_pep440.major}.{tag_version_pep440.minor}.{tag_version_pep440.micro}"
+            if tag_version_pep440.is_prerelease and tag_version_pep440.pre is not None:
+                tag_semver_str += f"-{tag_version_pep440.pre[0]}.{tag_version_pep440.pre[1]}"
+
+            tag_semver = parse_version_semver(tag_semver_str)
             package_v = parse_version_semver(package_version)
+
             if tag_semver != package_v:
                 print(f"❌ Version mismatch with {args.package_json_path or 'package.json'}!")
                 failures.append(f"{args.package_json_path or 'package.json'}")
         except Exception as e:
             print(f"⚠️ Could not parse tag version as SemVer: {e}")
             failures.append(f"{args.package_json_path or 'package.json'} (parse error)")
+
 
     # codemeta.json
     if args.check_codemeta_json.lower() == 'true':

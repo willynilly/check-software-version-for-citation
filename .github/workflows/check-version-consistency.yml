@@ -13,19 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ">=3.13.3" # required for version-consistency
+          cache: 'pip' # optional for version-consistency
+
       - name: Run version-consistency
         uses: willynilly/version-consistency@v1.0.0
         with:
           event_name: ${{ github.event_name }}
           ref: ${{ github.ref }}
           release_tag: ${{ github.event.release.tag_name }}
+
           check_pyproject_toml: true
-          pyproject_toml_path: python/pyproject.toml
+          pyproject_toml_path: pyproject.toml
+
           check_codemeta_json: true
-          codemeta_json_path: metadata/codemeta.json
+          codemeta_json_path: codemeta.json
+
           check_zenodo_json: true
-          zenodo_json_path: metadata/.zenodo.json
+          zenodo_json_path: .zenodo.json
+
           check_package_json: true
-          package_json_path: web/package.json
+          package_json_path: package.json
+
           check_setup_py: true
-          setup_py_path: python/setup.py
+          setup_py_path: setup.py
