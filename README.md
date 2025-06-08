@@ -63,7 +63,7 @@ Helps ensure:
 ## 🛠 How to use
 
 ```yaml
-uses: your-org/version-consistency@v1
+uses: willynilly/version-consistency@v1.0.0
 with:
   event_name: ${{ github.event_name }}
   ref: ${{ github.ref }}
