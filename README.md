@@ -1,27 +1,20 @@
 
 # 🚀 check-software-version-for-citation
 
-Ensures your GitHub **tag/release version** matches the version declared in:
-
-✅ `CITATION.cff`  
-✅ `pyproject.toml`  
-✅ `codemeta.json`  
-✅ `.zenodo.json`  
-✅ `package.json`  
-✅ `setup.py`
+Automatically ensures your GitHub tag or release version matches the version declared in your project's key metadata files.
 
 ---
 
 ## 📦 What does it do?
 
-🛡️ This GitHub Action automatically blocks a release or tag if the version in your GitHub tag/release does not match the version declared in your project files.
+🛡️ This GitHub Action **blocks a release or tag** if the version in your GitHub tag/release does not match the version declared in your project files.
 
-It helps you keep all your metadata **synchronized**, which is critical for:  
-✅ reproducibility  
-✅ citation tools  
-✅ package managers  
-✅ DOIs (Zenodo)  
-✅ Python/JS packaging  
+Helps ensure:
+✅ Reproducibility  
+✅ Correct citations  
+✅ Consistent packaging metadata  
+✅ Accurate DOIs (Zenodo)  
+✅ Cross-language version consistency (Python / JS / metadata)
 
 ---
 
@@ -35,42 +28,39 @@ It helps you keep all your metadata **synchronized**, which is critical for:
 
 ## 📋 Features
 
-✅ **Canonical tag version parsing** (PEP 440)  
+✅ Canonical tag version parsing (PEP 440)  
 ✅ Compare GitHub tag/release version to:
 
-- `CITATION.cff`  
-- `pyproject.toml`  
-- `setup.py`  
-- `codemeta.json`  
-- `.zenodo.json`  
+- `CITATION.cff`
+- `pyproject.toml`
+- `setup.py`
+- `codemeta.json`
+- `.zenodo.json`
 - `package.json`
 
-✅ **Cross-language support** (Python, JS, metadata)  
-✅ **Multi-ecosystem compatibility**  
+✅ Cross-language support (Python, JS, metadata)  
 ✅ Blocks incorrect GitHub releases/tags  
-✅ Runs on **push**, **release**, or **manual trigger**  
+✅ Runs on push, release, or manual trigger  
 ✅ Lightweight, pure Python — no third-party services  
 ✅ Easy to configure via GitHub Action inputs  
-✅ Suitable for **reproducible research** and **software citation best practices**
+✅ Suitable for reproducible research and software citation best practices
 
 ---
 
 ## 🔍 What files does it check?
 
-| File             | Always checked? | Optional flag |
-|------------------|-----------------|---------------|
-| `CITATION.cff`   | ✅ Yes          |               |
-| `pyproject.toml` |                 | `check_pyproject_toml` |
-| `codemeta.json`  |                 | `check_codemeta_json` |
-| `.zenodo.json`   |                 | `check_zenodo_json` |
-| `package.json`   |                 | `check_package_json` |
-| `setup.py`       |                 | `check_setup_py` (via `python setup.py --version`) |
+| File             | Parser used |
+|------------------|-------------|
+| `CITATION.cff`   | PEP 440 |
+| `pyproject.toml` | PEP 440 |
+| `setup.py`       | PEP 440 |
+| `package.json`   | Strict SemVer (converted from canonical PEP 440 tag) |
+| `codemeta.json`  | PEP 440 |
+| `.zenodo.json`   | PEP 440 |
 
 ---
 
 ## 🛠 How to use
-
-1️⃣ Add this action to your workflow:
 
 ```yaml
 uses: your-org/check-software-version-for-citation@v1
@@ -99,22 +89,22 @@ with:
 
 ## ⚙️ Inputs
 
-| Input                | Description                                  | Default           |
-|----------------------|----------------------------------------------|-------------------|
-| `cff_path`           | Path to `CITATION.cff`                        | `CITATION.cff`    |
-| `check_pyproject_toml`| Check `pyproject.toml`? (`true/false`)        | `false`           |
-| `pyproject_toml_path`| Path to `pyproject.toml`                      | `pyproject.toml`  |
-| `check_codemeta_json`| Check `codemeta.json`? (`true/false`)         | `false`           |
-| `codemeta_json_path` | Path to `codemeta.json`                       | `codemeta.json`   |
-| `check_zenodo_json`  | Check `.zenodo.json`? (`true/false`)          | `false`           |
-| `zenodo_json_path`   | Path to `.zenodo.json`                        | `.zenodo.json`    |
-| `check_package_json` | Check `package.json`? (`true/false`)          | `false`           |
-| `package_json_path`  | Path to `package.json`                        | `package.json`    |
-| `check_setup_py`     | Check `setup.py`? (`true/false`)              | `false`           |
-| `setup_py_path`      | Path to `setup.py`                            | `setup.py`        |
-| `event_name`         | GitHub event name (`push` or `release`)       | *(required)*      |
-| `ref`                | GitHub ref (for `push`)                       | *(optional)*      |
-| `release_tag`        | GitHub release tag name (for `release`)       | *(optional)*      |
+| Input                          | Description                             | Default           |
+|-------------------------------|-----------------------------------------|-------------------|
+| `cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
+| `check_pyproject_toml`         | Check `pyproject.toml`? (`true/false`)   | `false`           |
+| `pyproject_toml_path`          | Path to `pyproject.toml`                 | `pyproject.toml`  |
+| `check_codemeta_json`          | Check `codemeta.json`? (`true/false`)    | `false`           |
+| `codemeta_json_path`           | Path to `codemeta.json`                  | `codemeta.json`   |
+| `check_zenodo_json`            | Check `.zenodo.json`? (`true/false`)     | `false`           |
+| `zenodo_json_path`             | Path to `.zenodo.json`                   | `.zenodo.json`    |
+| `check_package_json`           | Check `package.json`? (`true/false`)     | `false`           |
+| `package_json_path`            | Path to `package.json`                   | `package.json`    |
+| `check_setup_py`               | Check `setup.py`? (`true/false`)         | `false`           |
+| `setup_py_path`                | Path to `setup.py`                       | `setup.py`        |
+| `event_name`                   | GitHub event name (`push` or `release`)  | *(required)*      |
+| `ref`                          | GitHub ref (for `push`)                  | *(optional)*      |
+| `release_tag`                  | GitHub release tag name (for `release`)  | *(optional)*      |
 
 ---
 
@@ -144,14 +134,6 @@ on:
 ✅ All versions match!
 ```
 
-If a mismatch occurs:
-
-```
-❌ Version mismatch with codemeta.json!
-❌ One or more version mismatches detected:
-- codemeta.json
-```
-
 ---
 
 ## 💡 Why use this?
@@ -159,17 +141,9 @@ If a mismatch occurs:
 ✅ Prevents **broken citations**  
 ✅ Keeps **version metadata consistent**  
 ✅ Avoids mismatches between **GitHub releases** and:
-- package managers
-- citation tools (Zenodo, CodeMeta, CFF)
 - Python packaging
 - JS packaging
-
----
-
-## ✨ Future plans
-
-- Support for **custom file matchers**
-- Support for **multiple version fields** per file (for advanced use cases)
+- Citation metadata
 
 ---
 
