@@ -1,11 +1,11 @@
 
-name: check-software-version-for-citation
+name: version-consistency
 description: >
   Ensures that your GitHub tag/release version matches the version declared in CITATION.cff,
   pyproject.toml, codemeta.json, .zenodo.json, package.json, and setup.py.
   Canonical tag version is parsed using PEP 440.
 
-author: Will Riley <wanderingwill@gmail.com>
+author: Your Name <your-email@example.com>
 
 inputs:
   cff_path:
