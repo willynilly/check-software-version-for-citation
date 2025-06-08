@@ -33,6 +33,28 @@ It helps you keep all your metadata **synchronized**, which is critical for:
 
 ---
 
+## 📋 Features
+
+✅ **Canonical tag version parsing** (PEP 440)  
+✅ Compare GitHub tag/release version to:
+
+- `CITATION.cff`  
+- `pyproject.toml`  
+- `setup.py`  
+- `codemeta.json`  
+- `.zenodo.json`  
+- `package.json`
+
+✅ **Cross-language support** (Python, JS, metadata)  
+✅ **Multi-ecosystem compatibility**  
+✅ Blocks incorrect GitHub releases/tags  
+✅ Runs on **push**, **release**, or **manual trigger**  
+✅ Lightweight, pure Python — no third-party services  
+✅ Easy to configure via GitHub Action inputs  
+✅ Suitable for **reproducible research** and **software citation best practices**
+
+---
+
 ## 🔍 What files does it check?
 
 | File             | Always checked? | Optional flag |
