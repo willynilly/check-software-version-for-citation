@@ -182,7 +182,7 @@ def main():
     # Final result
     if failures:
         print("❌ One or more version mismatches detected:")
-        for f in failures:
+        for f in sorted(failures):
             print(f"- {f}")
         sys.exit(1)
     else:
