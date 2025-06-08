@@ -59,9 +59,9 @@ def extract_cff_version(path):
         data = yaml.safe_load(f)
     version = data.get('version')
     if not version:
-        print(f"❌ CITATION.cff missing 'version' field!")
+        print(f"❌ {path or 'CITATION.cff'} missing 'version' field!")
         sys.exit(1)
-    print(f"📖 CITATION.cff version: {version}")
+    print(f"📖 {path or 'CITATION.cff'} version: {version}")
     return version
 
 def extract_pyproject_toml_version(path):
@@ -70,9 +70,9 @@ def extract_pyproject_toml_version(path):
     project = data.get('project', {})
     version = project.get('version')
     if not version:
-        print(f"❌ pyproject.toml missing [project] version!")
+        print(f"❌ {path or 'pyproject.toml'} missing [project] version!")
         sys.exit(1)
-    print(f"📖 pyproject.toml version: {version}")
+    print(f"📖 {path or 'pyproject.toml'} version: {version}")
     return version
 
 def extract_codemeta_json_version(path):
@@ -80,9 +80,9 @@ def extract_codemeta_json_version(path):
         data = json.load(f)
     version = data.get('version')
     if not version:
-        print(f"❌ codemeta.json missing 'version' field!")
+        print(f"❌ {path or 'codemeta.json'} missing 'version' field!")
         sys.exit(1)
-    print(f"📖 codemeta.json version: {version}")
+    print(f"📖 {path or 'codemeta.json'} version: {version}")
     return version
 
 def extract_zenodo_json_version(path):
@@ -90,9 +90,9 @@ def extract_zenodo_json_version(path):
         data = json.load(f)
     version = data.get('version')
     if not version:
-        print(f"❌ .zenodo.json missing 'version' field!")
+        print(f"❌ {path or '.zenodo.json'} missing 'version' field!")
         sys.exit(1)
-    print(f"📖 .zenodo.json version: {version}")
+    print(f"📖 {path or '.zenodo.json'} version: {version}")
     return version
 
 def extract_package_json_version(path):
@@ -100,19 +100,19 @@ def extract_package_json_version(path):
         data = json.load(f)
     version = data.get('version')
     if not version:
-        print(f"❌ package.json missing 'version' field!")
+        print(f"❌ {path or 'package.json'} missing 'version' field!")
         sys.exit(1)
-    print(f"📖 package.json version: {version}")
+    print(f"📖 {path or 'package.json'} version: {version}")
     return version
 
 def extract_setup_py_version(path):
     try:
         output = subprocess.check_output(['python', path, '--version'], stderr=subprocess.STDOUT)
         version = output.decode('utf-8').strip()
-        print(f"📖 setup.py version: {version}")
+        print(f"📖 {path or 'setup.py'} version: {version}")
         return version
     except subprocess.CalledProcessError as e:
-        print(f"❌ Error running setup.py --version:\n{e.output.decode('utf-8')}")
+        print(f"❌ Error running {path or 'setup.py'} --version:\n{e.output.decode('utf-8')}")
         sys.exit(1)
 
 # --- Main ---
@@ -129,24 +129,24 @@ def main():
     citation_version = extract_cff_version(args.cff_path)
     citation_v = parse_version_pep440(citation_version)
     if tag_version_pep440 != citation_v:
-        print(f"❌ Version mismatch with CITATION.cff!")
-        failures.append("CITATION.cff")
+        print(f"❌ Version mismatch with {args.cff_path or 'CITATION.cff'}!")
+        failures.append(f"{args.cff_path or 'CITATION.cff'}")
 
     # pyproject.toml
     if args.check_pyproject_toml.lower() == 'true':
         pyproject_version = extract_pyproject_toml_version(args.pyproject_toml_path)
         pyproject_v = parse_version_pep440(pyproject_version)
         if tag_version_pep440 != pyproject_v:
-            print(f"❌ Version mismatch with pyproject.toml!")
-            failures.append("pyproject.toml")
+            print(f"❌ Version mismatch with {args.pyproject_toml_path or 'pyproject.toml'}!")
+            failures.append(f"{args.pyproject_toml_path or 'pyproject.toml'}")
 
     # setup.py
     if args.check_setup_py.lower() == 'true':
         setup_version = extract_setup_py_version(args.setup_py_path)
         setup_v = parse_version_pep440(setup_version)
         if tag_version_pep440 != setup_v:
-            print(f"❌ Version mismatch with setup.py!")
-            failures.append("setup.py")
+            print(f"❌ Version mismatch with {args.setup_py_path or 'setup.py'}!")
+            failures.append(f"{args.setup_py_path or 'setup.py'}")
 
     # package.json
     if args.check_package_json.lower() == 'true':
@@ -157,27 +157,27 @@ def main():
                 tag_semver = semver.Version.parse(f"{tag_semver.major}.{tag_semver.minor}.{tag_semver.patch}-{tag_version_pep440.pre[0]}.{tag_version_pep440.pre[1]}")
             package_v = parse_version_semver(package_version)
             if tag_semver != package_v:
-                print(f"❌ Version mismatch with package.json!")
-                failures.append("package.json")
+                print(f"❌ Version mismatch with {args.package_json_path or 'package.json'}!")
+                failures.append(f"{args.package_json_path or 'package.json'}")
         except Exception as e:
             print(f"⚠️ Could not parse tag version as SemVer: {e}")
-            failures.append("package.json (parse error)")
+            failures.append("{args.package_json_path or 'package.json'} (parse error)")
 
     # codemeta.json
     if args.check_codemeta_json.lower() == 'true':
         codemeta_version = extract_codemeta_json_version(args.codemeta_json_path)
         codemeta_v = parse_version_pep440(codemeta_version)
         if tag_version_pep440 != codemeta_v:
-            print(f"❌ Version mismatch with codemeta.json!")
-            failures.append("codemeta.json")
+            print(f"❌ Version mismatch with {args.codemeta_json_path or 'codemeta.json'}!")
+            failures.append(f"{args.codemeta_json_path or 'codemeta.json'}")
 
     # .zenodo.json
     if args.check_zenodo_json.lower() == 'true':
         zenodo_version = extract_zenodo_json_version(args.zenodo_json_path)
         zenodo_v = parse_version_pep440(zenodo_version)
         if tag_version_pep440 != zenodo_v:
-            print(f"❌ Version mismatch with .zenodo.json!")
-            failures.append(".zenodo.json")
+            print(f"❌ Version mismatch with {args.zenodo_json_path or '.zenodo.json'}!")
+            failures.append(f"{args.zenodo_json_path or '.zenodo.json'}")
 
     # Final result
     if failures:
