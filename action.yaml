@@ -1,0 +1,96 @@
+name: check-same-software-version-for-citation
+description: >
+  Ensures that your GitHub tag/release version matches the version declared in CITATION.cff,
+  pyproject.toml, codemeta.json, .zenodo.json, package.json, and setup.py
+
+author: Your Name <your-email@example.com>
+
+inputs:
+  cff_path:
+    description: 'Path to CITATION.cff'
+    required: false
+    default: 'CITATION.cff'
+  check_pyproject_toml:
+    description: 'Also check pyproject.toml? (true/false)'
+    required: false
+    default: 'false'
+  pyproject_toml_path:
+    description: 'Path to pyproject.toml'
+    required: false
+    default: 'pyproject.toml'
+  check_codemeta_json:
+    description: 'Also check codemeta.json? (true/false)'
+    required: false
+    default: 'false'
+  codemeta_json_path:
+    description: 'Path to codemeta.json'
+    required: false
+    default: 'codemeta.json'
+  check_zenodo_json:
+    description: 'Also check .zenodo.json? (true/false)'
+    required: false
+    default: 'false'
+  zenodo_json_path:
+    description: 'Path to .zenodo.json'
+    required: false
+    default: '.zenodo.json'
+  check_package_json:
+    description: 'Also check package.json? (true/false)'
+    required: false
+    default: 'false'
+  package_json_path:
+    description: 'Path to package.json'
+    required: false
+    default: 'package.json'
+  check_setup_py:
+    description: 'Also check setup.py? (true/false)'
+    required: false
+    default: 'false'
+  setup_py_path:
+    description: 'Path to setup.py'
+    required: false
+    default: 'setup.py'
+  event_name:
+    description: 'GitHub event name (push or release)'
+    required: true
+  ref:
+    description: 'GitHub ref (for push)'
+    required: false
+  release_tag:
+    description: 'GitHub release tag name (for release)'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install pyyaml tomli
+      shell: bash
+
+    - name: Run version check
+      run: |
+        python scripts/check_version.py \
+          --cff-path "${{ inputs.cff_path }}" \
+          --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" \
+          --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" \
+          --check-codemeta-json "${{ inputs.check_codemeta_json }}" \
+          --codemeta-json-path "${{ inputs.codemeta_json_path }}" \
+          --check-zenodo-json "${{ inputs.check_zenodo_json }}" \
+          --zenodo-json-path "${{ inputs.zenodo_json_path }}" \
+          --check-package-json "${{ inputs.check_package_json }}" \
+          --package-json-path "${{ inputs.package_json_path }}" \
+          --check-setup-py "${{ inputs.check_setup_py }}" \
+          --setup-py-path "${{ inputs.setup_py_path }}" \
+          --event-name "${{ inputs.event_name }}" \
+          --ref "${{ inputs.ref }}" \
+          --release-tag "${{ inputs.release_tag }}"
+      shell: bash
