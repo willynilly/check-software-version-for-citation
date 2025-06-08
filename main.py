@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 
 import argparse
@@ -30,8 +29,6 @@ def parse_args():
     parser.add_argument('--release-tag', required=False, help='GitHub release tag name (for release)')
     return parser.parse_args()
 
-# File extractors omitted for brevity — assume same as before (load YAML, TOML, JSON, subprocess)
-
 def extract_tag_version(event_name, ref, release_tag):
     if event_name == 'push':
         match = re.match(r'refs/tags/v(.+)', ref)
@@ -55,6 +52,71 @@ def parse_version_pep440(v):
 def parse_version_semver(v):
     return semver.Version.parse(v)
 
+# --- Extractors ---
+
+def extract_cff_version(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f)
+    version = data.get('version')
+    if not version:
+        print(f"❌ CITATION.cff missing 'version' field!")
+        sys.exit(1)
+    print(f"📖 CITATION.cff version: {version}")
+    return version
+
+def extract_pyproject_toml_version(path):
+    with open(path, 'rb') as f:
+        data = tomli.load(f)
+    project = data.get('project', {})
+    version = project.get('version')
+    if not version:
+        print(f"❌ pyproject.toml missing [project] version!")
+        sys.exit(1)
+    print(f"📖 pyproject.toml version: {version}")
+    return version
+
+def extract_codemeta_json_version(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    version = data.get('version')
+    if not version:
+        print(f"❌ codemeta.json missing 'version' field!")
+        sys.exit(1)
+    print(f"📖 codemeta.json version: {version}")
+    return version
+
+def extract_zenodo_json_version(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    version = data.get('version')
+    if not version:
+        print(f"❌ .zenodo.json missing 'version' field!")
+        sys.exit(1)
+    print(f"📖 .zenodo.json version: {version}")
+    return version
+
+def extract_package_json_version(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    version = data.get('version')
+    if not version:
+        print(f"❌ package.json missing 'version' field!")
+        sys.exit(1)
+    print(f"📖 package.json version: {version}")
+    return version
+
+def extract_setup_py_version(path):
+    try:
+        output = subprocess.check_output(['python', path, '--version'], stderr=subprocess.STDOUT)
+        version = output.decode('utf-8').strip()
+        print(f"📖 setup.py version: {version}")
+        return version
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error running setup.py --version:\n{e.output.decode('utf-8')}")
+        sys.exit(1)
+
+# --- Main ---
+
 def main():
     args = parse_args()
 
@@ -64,7 +126,7 @@ def main():
     failures = []
 
     # CITATION.cff
-    citation_version = extract_citation_version(args.cff_path)
+    citation_version = extract_cff_version(args.cff_path)
     citation_v = parse_version_pep440(citation_version)
     if tag_version_pep440 != citation_v:
         print(f"❌ Version mismatch with CITATION.cff!")
@@ -72,7 +134,7 @@ def main():
 
     # pyproject.toml
     if args.check_pyproject_toml.lower() == 'true':
-        pyproject_version = extract_pyproject_version(args.pyproject_toml_path)
+        pyproject_version = extract_pyproject_toml_version(args.pyproject_toml_path)
         pyproject_v = parse_version_pep440(pyproject_version)
         if tag_version_pep440 != pyproject_v:
             print(f"❌ Version mismatch with pyproject.toml!")
@@ -88,7 +150,7 @@ def main():
 
     # package.json
     if args.check_package_json.lower() == 'true':
-        package_version = extract_package_version(args.package_json_path)
+        package_version = extract_package_json_version(args.package_json_path)
         try:
             tag_semver = parse_version_semver(f"{tag_version_pep440.major}.{tag_version_pep440.minor}.{tag_version_pep440.micro}")
             if tag_version_pep440.is_prerelease:
@@ -103,7 +165,7 @@ def main():
 
     # codemeta.json
     if args.check_codemeta_json.lower() == 'true':
-        codemeta_version = extract_codemeta_version(args.codemeta_json_path)
+        codemeta_version = extract_codemeta_json_version(args.codemeta_json_path)
         codemeta_v = parse_version_pep440(codemeta_version)
         if tag_version_pep440 != codemeta_v:
             print(f"❌ Version mismatch with codemeta.json!")
@@ -111,7 +173,7 @@ def main():
 
     # .zenodo.json
     if args.check_zenodo_json.lower() == 'true':
-        zenodo_version = extract_zenodo_version(args.zenodo_json_path)
+        zenodo_version = extract_zenodo_json_version(args.zenodo_json_path)
         zenodo_v = parse_version_pep440(zenodo_version)
         if tag_version_pep440 != zenodo_v:
             print(f"❌ Version mismatch with .zenodo.json!")
