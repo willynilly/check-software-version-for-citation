@@ -64,6 +64,15 @@ Helps ensure:
 
 ```yaml
 
+name: Check software version consistency for citation purposes
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  release:
+    types: [published]
+
 jobs:
   check-version:
     name: Check version consistency
@@ -83,6 +92,10 @@ jobs:
           event_name: ${{ github.event_name }}
           ref: ${{ github.ref }}
           release_tag: ${{ github.event.release.tag_name }}
+          fail_for_missing_file: false
+
+          check_citation_cff: true
+          citation_cff_path: CITATION.cff
 
           check_pyproject_toml: true
           pyproject_toml_path: pyproject.toml
@@ -107,7 +120,12 @@ jobs:
 
 | Input                          | Description                             | Default           |
 |-------------------------------|-----------------------------------------|-------------------|
-| `cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
+| `event_name`                   | GitHub event name (`push` or `release`)  | *(required)*      |
+| `ref`                          | GitHub ref (for `push`)                  | *(optional)*      |
+| `release_tag`                  | GitHub release tag name (for `release`)  | *(optional)*      |
+| `fail_for_missing_file`                          | Fail for any checked file that is missing                 | `false`      |
+| `check_citation_cff`                     | Check `CITATION.cff`? (`true/false`)                   | `true`    |
+| `citation_cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
 | `check_pyproject_toml`         | Check `pyproject.toml`? (`true/false`)   | `false`           |
 | `pyproject_toml_path`          | Path to `pyproject.toml`                 | `pyproject.toml`  |
 | `check_codemeta_json`          | Check `codemeta.json`? (`true/false`)    | `false`           |
@@ -118,22 +136,6 @@ jobs:
 | `package_json_path`            | Path to `package.json`                   | `package.json`    |
 | `check_setup_py`               | Check `setup.py`? (`true/false`)         | `false`           |
 | `setup_py_path`                | Path to `setup.py`                       | `setup.py`        |
-| `event_name`                   | GitHub event name (`push` or `release`)  | *(required)*      |
-| `ref`                          | GitHub ref (for `push`)                  | *(optional)*      |
-| `release_tag`                  | GitHub release tag name (for `release`)  | *(optional)*      |
-
----
-
-## 🚦 Example workflow trigger
-
-```yaml
-on:
-  push:
-    tags:
-      - 'v*.*.*'
-  release:
-    types: [published]
-```
 
 ---
 

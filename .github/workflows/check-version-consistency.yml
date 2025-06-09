@@ -26,6 +26,10 @@ jobs:
           event_name: ${{ github.event_name }}
           ref: ${{ github.ref }}
           release_tag: ${{ github.event.release.tag_name }}
+          fail_for_missing_file: false
+
+          check_citation_cff: true
+          citation_cff_path: CITATION.cff
 
           check_pyproject_toml: true
           pyproject_toml_path: pyproject.toml
