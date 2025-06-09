@@ -3,8 +3,8 @@ from argparse import Namespace
 
 import packaging.version
 
-from version_consistency.extractors.extractor import Extractor
-from version_consistency.utils import parse_version_pep440
+from same_version.extractors.extractor import Extractor
+from same_version.utils import parse_version_pep440
 
 logger = logging.getLogger(__name__)
 

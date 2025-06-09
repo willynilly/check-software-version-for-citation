@@ -1,7 +1,7 @@
 import logging
 from argparse import Namespace
 
-from version_consistency.extractors.toml_extractor import TomlExtractor
+from same_version.extractors.toml_extractor import TomlExtractor
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-# 🚀 version-consistency
+# 🚀 same-version
 
 Automatically ensures your software version metadata is consistent across key project files.
 
@@ -6,7 +6,7 @@ Automatically ensures your software version metadata is consistent across key pr
 
 ## 📦 What does it do?
 
-`version-consistency` checks that software version metadata is consistent across your project files. It can stop GitHub pull requests and local git commits/pushes of projects with inconsistent software version metadata.
+`same-version` checks that software version metadata is consistent across your project files. It can stop GitHub pull requests and local git commits/pushes of projects with inconsistent software version metadata.
 
 Helps ensure:
 
@@ -40,7 +40,7 @@ This workflow runs after the tag or release exists and can report problems, but 
 
 ### 3️⃣ Python CLI
 
-- You can run `version-consistency` manually from the command line
+- You can run `same-version` manually from the command line
 - Useful for:
   - Local checks before release
   - CI checks outside of GitHub Actions
@@ -169,8 +169,8 @@ jobs:
           python-version: ">=3.12"
           cache: 'pip'
 
-      - name: Run version-consistency
-        uses: willynilly/version-consistency@v1.0.0
+      - name: Run same-version
+        uses: willynilly/same-version@v1.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -219,8 +219,8 @@ jobs:
           python-version: ">=3.12"
           cache: 'pip'
 
-      - name: Run version-consistency
-        uses: willynilly/version-consistency@v1.0.0
+      - name: Run same-version
+        uses: willynilly/same-version@v1.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -256,10 +256,10 @@ Add to your `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
-  - repo: https://github.com/willynilly/version-consistency
+  - repo: https://github.com/willynilly/same-version
     rev: v1.0.0  # Use latest tag
     hooks:
-      - id: version-consistency
+      - id: same-version
 ```
 
 #### Installing the hooks:
@@ -272,7 +272,7 @@ pre-commit install -t pre-commit -t pre-push
 #### Manually run the hook (optional):
 
 ```bash
-pre-commit run version-consistency --all-files
+pre-commit run same-version --all-files
 ```
 
 ---
@@ -282,13 +282,13 @@ pre-commit run version-consistency --all-files
 After installing the package:
 
 ```bash
-pip install version-consistency  # or pip install .
+pip install same-version  # or pip install .
 ```
 
 Run the CLI:
 
 ```bash
-version-consistency
+same-version
 ```
 
 By default, it will scan all files, but not GitHub events. You can specify additiona parameters (see the `action.yml` of this GitHub Action for a robust example).
@@ -298,7 +298,7 @@ However, you may want to be strict and fail if any files used during checking is
 Here's an example of failing if any files are missing for a Python project that uses a CITATION.CFF file and pyproject.toml file, any of the other supported files that contain software version metatadata (e.g., codemeta.json, setup.py, package.json, etc.)  
 
 ```bash
-version-consistency --fail-for-missing-file "true" --check-package-json "false" --check-codemeta-json "false" --check-setup-py "false" --check-zenodo-json "false"
+same-version --fail-for-missing-file "true" --check-package-json "false" --check-codemeta-json "false" --check-setup-py "false" --check-zenodo-json "false"
 ```
 
 You can integrate this into:
@@ -316,8 +316,8 @@ Pull requests and contributions are welcome!
 To set up your development environment:
 
 ```bash
-git clone https://github.com/willynilly/version-consistency.git
-cd version-consistency
+git clone https://github.com/willynilly/same-version.git
+cd same-version
 pip install -e .
 pre-commit install -t pre-commit -t pre-push
 pre-commit run --all-files
@@ -334,7 +334,7 @@ pre-commit run --all-files
 | [`python-semantic-release`](https://python-semantic-release.readthedocs.io/) | Automated release tool — not designed for cross-file version consistency checking |
 | `check-tag-version` (various community actions) | Usually limited to one file — no multi-ecosystem, no citation support |
 
-✅ **`version-consistency` is currently the only GitHub Action that provides:**
+✅ **`same-version` is currently the only GitHub Action that provides:**
 
 - Canonical **PEP 440 tag version parsing**
 - Cross-ecosystem validation:

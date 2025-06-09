@@ -1,7 +1,7 @@
 from argparse import Namespace
 
-from version_consistency.checkers.checker import Checker
-from version_consistency.extractors.github_event_extractor import GitHubEventExtractor
+from same_version.checkers.checker import Checker
+from same_version.extractors.github_event_extractor import GitHubEventExtractor
 
 
 class GitHubEventChecker(Checker):

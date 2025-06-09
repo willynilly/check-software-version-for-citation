@@ -1,5 +1,5 @@
 
-name: version-consistency
+name: same-version
 description: >
   Checks whether your GitHub tag/release version matches the version declared in CITATION.cff,
   pyproject.toml, codemeta.json, .zenodo.json, package.json, and setup.py.
@@ -78,7 +78,7 @@ runs:
       run: pip install --force-reinstall ${{ github.action_path }} # the --force-reinstall avoids caching issues from external dependencies which may rely on this action
       shell: bash
 
-    - name: Run version-consistency
+    - name: Run same-version
       id: check_version
-      run: version-consistency --check-citation-cff "${{ inputs.check_citation_cff }}" --citation-cff-path "${{ inputs.citation_cff_path }}" --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" --check-codemeta-json "${{ inputs.check_codemeta_json }}" --codemeta-json-path "${{ inputs.codemeta_json_path }}" --check-zenodo-json "${{ inputs.check_zenodo_json }}" --zenodo-json-path "${{ inputs.zenodo_json_path }}" --check-package-json "${{ inputs.check_package_json }}" --package-json-path "${{ inputs.package_json_path }}" --check-setup-py "${{ inputs.check_setup_py }}" --setup-py-path "${{ inputs.setup_py_path }}" --check-github-event "${{ inputs.check_github_event }}" --github-event-name "${{ inputs.event_name }}" --github-event-ref "${{ inputs.ref }}" --github-event-release-tag "${{ inputs.release_tag }}" --fail-for-missing-file "${{ inputs.fail_for_missing_file }}"
+      run: same-version --check-citation-cff "${{ inputs.check_citation_cff }}" --citation-cff-path "${{ inputs.citation_cff_path }}" --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" --check-codemeta-json "${{ inputs.check_codemeta_json }}" --codemeta-json-path "${{ inputs.codemeta_json_path }}" --check-zenodo-json "${{ inputs.check_zenodo_json }}" --zenodo-json-path "${{ inputs.zenodo_json_path }}" --check-package-json "${{ inputs.check_package_json }}" --package-json-path "${{ inputs.package_json_path }}" --check-setup-py "${{ inputs.check_setup_py }}" --setup-py-path "${{ inputs.setup_py_path }}" --check-github-event "${{ inputs.check_github_event }}" --github-event-name "${{ inputs.event_name }}" --github-event-ref "${{ inputs.ref }}" --github-event-release-tag "${{ inputs.release_tag }}" --fail-for-missing-file "${{ inputs.fail_for_missing_file }}"
       shell: bash

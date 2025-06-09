@@ -1,6 +1,6 @@
 from argparse import Namespace
 
-from version_consistency.extractors.cli_extractor import CliExtractor
+from same_version.extractors.cli_extractor import CliExtractor
 
 
 def test_cli_extractor_extract_version_with_empty_cli_args(empty_cli_args: Namespace):

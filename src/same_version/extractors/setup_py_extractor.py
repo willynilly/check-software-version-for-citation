@@ -3,7 +3,7 @@ import subprocess
 import sys
 from argparse import Namespace
 
-from version_consistency.extractors.file_extractor import FileExtractor
+from same_version.extractors.file_extractor import FileExtractor
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 import logging
 from argparse import Namespace
 
-from version_consistency.extractors.json_extractor import JsonExtractor
+from same_version.extractors.json_extractor import JsonExtractor
 
 logger = logging.getLogger(__name__)
 

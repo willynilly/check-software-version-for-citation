@@ -1,4 +1,4 @@
-from version_consistency.checkers.checker import Checker
+from same_version.checkers.checker import Checker
 
 
 class FileChecker(Checker):

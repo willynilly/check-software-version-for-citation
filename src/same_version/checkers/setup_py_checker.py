@@ -1,8 +1,8 @@
 import logging
 from argparse import Namespace
 
-from version_consistency.checkers.file_checker import FileChecker
-from version_consistency.extractors.setup_py_extractor import SetupPyExtractor
+from same_version.checkers.file_checker import FileChecker
+from same_version.extractors.setup_py_extractor import SetupPyExtractor
 
 logger = logging.getLogger(__name__)
 

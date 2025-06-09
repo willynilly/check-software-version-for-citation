@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: version-consistency
+title: same-version
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -10,7 +10,7 @@ authors:
     email: wanderingwill@gmail.com
     orcid: "https://orcid.org/0000-0003-1822-6756"
 repository-code: >-
-  https://github.com/willynilly/version-consistency
+  https://github.com/willynilly/same-version
 abstract: >-
   Automatically ensures your software version metadata is consistent across key project files.
 keywords:

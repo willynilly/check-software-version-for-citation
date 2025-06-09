@@ -22,11 +22,11 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.12" # required by version-consistency
+          python-version: ">=3.12" # required by same-version
           cache: 'pip' # optional
 
-      - name: Run version-consistency
-        uses: willynilly/version-consistency@v1.0.0
+      - name: Run same-version
+        uses: willynilly/same-version@v1.0.0
         with:
           check_github_event: true
           github_event_name: ${{ github.event_name }}

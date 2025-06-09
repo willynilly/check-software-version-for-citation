@@ -4,25 +4,25 @@ import argparse
 import logging
 import sys
 
-from version_consistency.checkers.checker import Checker
-from version_consistency.checkers.citation_cff_checker import CitationCffChecker
-from version_consistency.checkers.codemeta_json_checker import CodeMetaJsonChecker
-from version_consistency.checkers.github_event_checker import GitHubEventChecker
-from version_consistency.checkers.package_json_checker import PackageJsonChecker
-from version_consistency.checkers.pyproject_toml_checker import PyprojectTomlChecker
-from version_consistency.checkers.setup_py_checker import SetupPyChecker
-from version_consistency.checkers.zenodo_json_checker import ZenodoJsonChecker
-from version_consistency.extractors.citation_cff_extractor import CitationCffExtractor
-from version_consistency.extractors.cli_extractor import CliExtractor
-from version_consistency.extractors.codemeta_json_extractor import CodeMetaJsonExtractor
-from version_consistency.extractors.github_event_extractor import GitHubEventExtractor
-from version_consistency.extractors.package_json_extractor import PackageJsonExtractor
-from version_consistency.extractors.pyproject_toml_extractor import (
+from same_version.checkers.checker import Checker
+from same_version.checkers.citation_cff_checker import CitationCffChecker
+from same_version.checkers.codemeta_json_checker import CodeMetaJsonChecker
+from same_version.checkers.github_event_checker import GitHubEventChecker
+from same_version.checkers.package_json_checker import PackageJsonChecker
+from same_version.checkers.pyproject_toml_checker import PyprojectTomlChecker
+from same_version.checkers.setup_py_checker import SetupPyChecker
+from same_version.checkers.zenodo_json_checker import ZenodoJsonChecker
+from same_version.extractors.citation_cff_extractor import CitationCffExtractor
+from same_version.extractors.cli_extractor import CliExtractor
+from same_version.extractors.codemeta_json_extractor import CodeMetaJsonExtractor
+from same_version.extractors.github_event_extractor import GitHubEventExtractor
+from same_version.extractors.package_json_extractor import PackageJsonExtractor
+from same_version.extractors.pyproject_toml_extractor import (
     PyprojectTomlExtractor,
 )
-from version_consistency.extractors.setup_py_extractor import SetupPyExtractor
-from version_consistency.extractors.zenodo_json_extractor import ZenodoJsonExtractor
-from version_consistency.log_collector import get_log_collector
+from same_version.extractors.setup_py_extractor import SetupPyExtractor
+from same_version.extractors.zenodo_json_extractor import ZenodoJsonExtractor
+from same_version.log_collector import get_log_collector
 
 logger = logging.getLogger(__name__)
 

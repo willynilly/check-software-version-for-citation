@@ -1,7 +1,7 @@
 import logging
 
-from version_consistency.checkers.file_checker import FileChecker
-from version_consistency.utils import parse_version_semver
+from same_version.checkers.file_checker import FileChecker
+from same_version.utils import parse_version_semver
 
 logger = logging.getLogger(__name__)
 

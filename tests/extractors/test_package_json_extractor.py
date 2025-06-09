@@ -1,7 +1,7 @@
 from argparse import Namespace
 from pathlib import Path
 
-from version_consistency.extractors.package_json_extractor import PackageJsonExtractor
+from same_version.extractors.package_json_extractor import PackageJsonExtractor
 
 
 def test_package_json_extractor_extract_version_with_empty_cli_args(empty_cli_args: Namespace):

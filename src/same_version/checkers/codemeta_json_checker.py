@@ -1,8 +1,8 @@
 import logging
 from argparse import Namespace
 
-from version_consistency.checkers.file_checker import FileChecker
-from version_consistency.extractors.codemeta_json_extractor import CodeMetaJsonExtractor
+from same_version.checkers.file_checker import FileChecker
+from same_version.extractors.codemeta_json_extractor import CodeMetaJsonExtractor
 
 logger = logging.getLogger(__name__)
 

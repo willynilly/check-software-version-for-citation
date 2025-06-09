@@ -1,7 +1,7 @@
 from argparse import Namespace
 from pathlib import Path
 
-from version_consistency.extractors.extractor import Extractor
+from same_version.extractors.extractor import Extractor
 
 
 class FileExtractor(Extractor):

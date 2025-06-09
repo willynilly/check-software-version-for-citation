@@ -3,7 +3,7 @@ from argparse import Namespace
 
 import yaml
 
-from version_consistency.extractors.file_extractor import FileExtractor
+from same_version.extractors.file_extractor import FileExtractor
 
 logger = logging.getLogger(__name__)
 

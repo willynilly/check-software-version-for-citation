@@ -1,7 +1,7 @@
 import logging
 from argparse import Namespace
 
-from version_consistency.extractors.extractor import Extractor
+from same_version.extractors.extractor import Extractor
 
 logger = logging.getLogger(__name__)
 

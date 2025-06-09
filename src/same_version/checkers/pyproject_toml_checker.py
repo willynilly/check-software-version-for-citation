@@ -1,8 +1,8 @@
 import logging
 from argparse import Namespace
 
-from version_consistency.checkers.file_checker import FileChecker
-from version_consistency.extractors.pyproject_toml_extractor import (
+from same_version.checkers.file_checker import FileChecker
+from same_version.extractors.pyproject_toml_extractor import (
     PyprojectTomlExtractor,
 )
 
