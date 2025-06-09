@@ -1,36 +1,59 @@
-
 # 🚀 version-consistency
 
-Automatically ensures your GitHub tag or release version matches the version declared in your project's key metadata files.
+Automatically ensures your software version metadata is consistent across key project files.
 
 ---
 
 ## 📦 What does it do?
 
-🛡️ This GitHub Action **blocks a release or tag** if the version in your GitHub tag/release does not match the version declared in your project files.
+`version-consistency` checks that software version metadata is consistent across your project files. It can stop GitHub pull requests and local git commits/pushes of projects with inconsistent software version metadata.
 
 Helps ensure:
+
 ✅ Reproducibility  
 ✅ Correct citations  
 ✅ Consistent packaging metadata  
 ✅ Accurate DOIs (Zenodo)  
 ✅ Cross-language version consistency (Python / JS / metadata)
 
----
+It can be used in **three ways**, each of which have different capabilities:
 
-## 🎯 When does it run?
+### 1️⃣ GitHub Action
 
-- On **push** of version tags (e.g. `v1.2.3`)
-- On **published GitHub release**
-- Can also be run **manually** via `workflow_dispatch`
+- Runs in GitHub Actions
+- Can block:
+  - Inconsistent **pull requests** (which helps prevent inconsistent **tags** and **GitHub releases** )
+- Can report (but only after the tag/release has been created):
+  - Incorrect **tags**
+  - Incorrect **GitHub releases**
+
+  _Note: GitHub Actions cannot block tags or releases after they have been created.  
+This workflow runs after the tag or release exists and can report problems, but cannot prevent them from appearing in GitHub UI._
+
+
+### 2️⃣ Pre-commit hook
+
+- Runs automatically **before each commit and push** (if enabled)
+- Can block:
+  - Inconsistent **commits**
+  - Inconsistent **tags being pushed**
+
+### 3️⃣ Python CLI
+
+- You can run `version-consistency` manually from the command line
+- Useful for:
+  - Local checks before release
+  - CI checks outside of GitHub Actions
+  - Automated scripts
 
 ---
 
 ## 📋 Features
 
-✅ Canonical tag version parsing (PEP 440)  
-✅ Compare GitHub tag/release version to:
+✅ Canonical tag version parsing (PEP 440)
 
+✅ Compare software version metadata from:
+- GitHub tag/release
 - `CITATION.cff`
 - `pyproject.toml`
 - `setup.py`
@@ -38,16 +61,27 @@ Helps ensure:
 - `.zenodo.json`
 - `package.json`
 
-✅ Cross-language support (Python, JS, metadata)  
-✅ Blocks incorrect GitHub releases/tags  
-✅ Runs on push, release, or manual trigger  
+✅ Cross-language support (e.g., Python, JS)
+
 ✅ Lightweight, pure Python — no third-party services  
+
 ✅ Easy to configure via GitHub Action inputs  
+
 ✅ Suitable for reproducible research and software citation best practices
+
+✅ Blocks inconsistent GitHub pull requests (via GitHub Action) 
+
+✅ Reports inconsistent GitHub releases/tags (via GitHub Action) 
+
+✅ Blocks inconsistent commits and tags (via Pre-commit hook)
+
+✅ Modular and extendable for additional software version metadata (via Python CLI)
 
 ---
 
 ## 🔍 What files does it check?
+
+These files are currently supported out-of-the-box:
 
 | File             | Parser used |
 |------------------|-------------|
@@ -60,11 +94,109 @@ Helps ensure:
 
 ---
 
+## ⚙️ Inputs
+
+| CLI Parameter                 | GitHub Action Input                     | Description                             | Default           |
+|-------------------------------|-----------------------------------------|-----------------------------------------|-------------------|
+| `--base-version`         | `base_version`                     | Base version from which to compare all other versions  | *(optional)*      |
+| `--check-github-event`         | `check_github_event`                     | Check GitHut events? (`true` or `false`)  | `false`      |
+| `--github-event-name`         | `github_event_name`                     | GitHub event name (`push` or `release`)  | *(optional)*      |
+| `--github-event-ref`                | `github_event_ref`                            | GitHub ref (for `push` event)                  | *(optional)*      |
+| `--github-event-release-tag`        | `github_event_release_tag`                    | GitHub release tag name (for `release` event)  | *(optional)*      |
+| `--fail-for-missing-file`     | `fail_for_missing_file`                 | Fail for any checked file that is missing| `false`           |
+| `--check-citation-cff`        | `check_citation_cff`                    | Check `CITATION.cff`? (`true/false`)     | `true`            |
+| `--citation-cff-path`         | `citation_cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
+| `--check-pyproject-toml`      | `check_pyproject_toml`                  | Check `pyproject.toml`? (`true/false`)   | `true`            |
+| `--pyproject-toml-path`       | `pyproject_toml_path`                   | Path to `pyproject.toml`                 | `pyproject.toml`  |
+| `--check-codemeta-json`       | `check_codemeta_json`                   | Check `codemeta.json`? (`true/false`)    | `true`            |
+| `--codemeta-json-path`        | `codemeta_json_path`                    | Path to `codemeta.json`                  | `codemeta.json`   |
+| `--check-zenodo-json`         | `check_zenodo_json`                     | Check `.zenodo.json`? (`true/false`)     | `true`            |
+| `--zenodo-json-path`          | `zenodo_json_path`                      | Path to `.zenodo.json`                   | `.zenodo.json`    |
+| `--check-package-json`        | `check_package_json`                    | Check `package.json`? (`true/false`)     | `true`            |
+| `--package-json-path`         | `package_json_path`                     | Path to `package.json`                   | `package.json`    |
+| `--check-setup-py`            | `check_setup_py`                        | Check `setup.py`? (`true/false`)         | `true`            |
+| `--setup-py-path`             | `setup_py_path`                         | Path to `setup.py`                       | `setup.py`        |
+
+---
+
+
+## 🎯 When does it run?
+
+### GitHub Action:
+
+- On **pull requests** (blocks inconsistent PRs)
+- On **push of version tags** (reports incorrect tags after tag creation)
+- On **published GitHub releases** (reports incorrect releases after release creation)
+- Manually (via `workflow_dispatch`)
+
+
+### Pre-commit hook:
+
+- **Before each commit** (`pre-commit` hook)
+- **Before pushing commits or tags** (`pre-push` hook)
+
+### CLI:
+
+- **Anytime**, on demand
+
+---
+
 ## 🛠 How to use
 
-```yaml
+---
 
-name: Check software version consistency for citation purposes
+### 1️⃣ Using in GitHub Actions
+
+#### To block inconsistent pull requests:
+
+```yaml
+name: Check version consistency on pull requests
+
+on:
+  pull_request:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ">=3.12"
+          cache: 'pip'
+
+      - name: Run version-consistency
+        uses: willynilly/version-consistency@v1.0.0
+        with:
+          fail_for_missing_file: false
+          check_github_event: true
+          github_event_name: ${{ github.event_name }}
+          github_event_ref: ${{ github.ref }}
+          github_event_release_tag: ${{ github.event.release.tag_name }}
+          check_citation_cff: true
+          citation_cff_path: CITATION.cff
+          check_pyproject_toml: true
+          pyproject_toml_path: pyproject.toml
+          check_codemeta_json: true
+          codemeta_json_path: codemeta.json
+          check_zenodo_json: true
+          zenodo_json_path: .zenodo.json
+          check_package_json: true
+          package_json_path: package.json
+          check_setup_py: true
+          setup_py_path: setup.py
+```
+
+---
+
+#### To report (BUT NOT BLOCK) incorrect tags/releases:
+
+```yaml
+name: Check version consistency on tags/releases
 
 on:
   push:
@@ -75,84 +207,120 @@ on:
 
 jobs:
   check-version:
-    name: Check version consistency
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.12" # required by version-consistency
-          cache: 'pip' # optional
+          python-version: ">=3.12"
+          cache: 'pip'
 
       - name: Run version-consistency
         uses: willynilly/version-consistency@v1.0.0
         with:
-          event_name: ${{ github.event_name }}
-          ref: ${{ github.ref }}
-          release_tag: ${{ github.event.release.tag_name }}
           fail_for_missing_file: false
-
+          check_github_event: true
+          github_event_name: ${{ github.event_name }}
+          github_event_ref: ${{ github.ref }}
+          github_event_release_tag: ${{ github.event.release.tag_name }}
           check_citation_cff: true
           citation_cff_path: CITATION.cff
-
           check_pyproject_toml: true
           pyproject_toml_path: pyproject.toml
-
           check_codemeta_json: true
           codemeta_json_path: codemeta.json
-
           check_zenodo_json: true
           zenodo_json_path: .zenodo.json
-
           check_package_json: true
           package_json_path: package.json
-
           check_setup_py: true
           setup_py_path: setup.py
-
 ```
 
 ---
 
-## ⚙️ Inputs
+### 2️⃣ Using with pre-commit hooks
 
-| Input                          | Description                             | Default           |
-|-------------------------------|-----------------------------------------|-------------------|
-| `event_name`                   | GitHub event name (`push` or `release`)  | *(required)*      |
-| `ref`                          | GitHub ref (for `push`)                  | *(optional)*      |
-| `release_tag`                  | GitHub release tag name (for `release`)  | *(optional)*      |
-| `fail_for_missing_file`                          | Fail for any checked file that is missing                 | `false`      |
-| `check_citation_cff`                     | Check `CITATION.cff`? (`true/false`)                   | `true`    |
-| `citation_cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
-| `check_pyproject_toml`         | Check `pyproject.toml`? (`true/false`)   | `true`           |
-| `pyproject_toml_path`          | Path to `pyproject.toml`                 | `pyproject.toml`  |
-| `check_codemeta_json`          | Check `codemeta.json`? (`true/false`)    | `true`           |
-| `codemeta_json_path`           | Path to `codemeta.json`                  | `codemeta.json`   |
-| `check_zenodo_json`            | Check `.zenodo.json`? (`true/false`)     | `true`           |
-| `zenodo_json_path`             | Path to `.zenodo.json`                   | `.zenodo.json`    |
-| `check_package_json`           | Check `package.json`? (`true/false`)     | `true`           |
-| `package_json_path`            | Path to `package.json`                   | `package.json`    |
-| `check_setup_py`               | Check `setup.py`? (`true/false`)         | `true`           |
-| `setup_py_path`                | Path to `setup.py`                       | `setup.py`        |
+You can configure the pre-commit hook to block:
+
+✅ Commits with inconsistent version metadata (`pre-commit`)  
+✅ Tags with inconsistent version metadata (`pre-push`)
+
+#### Adding the hook:
+
+Add to your `.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: https://github.com/willynilly/version-consistency
+    rev: v1.0.0  # Use latest tag
+    hooks:
+      - id: version-consistency
+```
+
+#### Installing the hooks:
+
+```bash
+# Install for both pre-commit and pre-push
+pre-commit install -t pre-commit -t pre-push
+```
+
+#### Manually run the hook (optional):
+
+```bash
+pre-commit run version-consistency --all-files
+```
 
 ---
 
-## 💥 Example output
+### 3️⃣ Using the CLI manually
 
+After installing the package:
+
+```bash
+pip install version-consistency  # or pip install .
 ```
-📦 Detected release tag version: 1.2.3
-📖 CITATION.cff version: 1.2.3
-📖 pyproject.toml version: 1.2.3
-📖 codemeta.json version: 1.2.3
-📖 .zenodo.json version: 1.2.3
-📖 package.json version: 1.2.3
-📖 setup.py version: 1.2.3
-✅ All versions match!
+
+Run the CLI:
+
+```bash
+version-consistency
+```
+
+By default, it will scan all files, but not GitHub events. You can specify additiona parameters (see the `action.yml` of this GitHub Action for a robust example).
+
+By default, the tool will not fail if some of the files are missing. This inclusively checks as many file types as possible without additional configuration.
+However, you may want to be strict and fail if any files used during checking is missing.
+Here's an example of failing if any files are missing for a Python project that uses a CITATION.CFF file and pyproject.toml file, any of the other supported files that contain software version metatadata (e.g., codemeta.json, setup.py, package.json, etc.)  
+
+```bash
+version-consistency --fail-for-missing-file "true" --check-package-json "false" --check-codemeta-json "false" --check-setup-py "false" --check-zenodo-json "false"
+```
+
+You can integrate this into:
+
+✅ Local release scripts  
+✅ CI pipelines (non-GitHub)  
+✅ Manual checks
+
+---
+
+## 🤝 Contributing
+
+Pull requests and contributions are welcome!
+
+To set up your development environment:
+
+```bash
+git clone https://github.com/willynilly/version-consistency.git
+cd version-consistency
+pip install -e .
+pre-commit install -t pre-commit -t pre-push
+pre-commit run --all-files
 ```
 
 ---
@@ -173,19 +341,7 @@ jobs:
     - Python (`pyproject.toml`, `setup.py`)
     - JavaScript (`package.json`)
     - Citation / metadata (`CITATION.cff`, `codemeta.json`, `.zenodo.json`)
-- Ability to **block incorrect releases** directly in GitHub CI
 - Lightweight, non-invasive — designed to fit **any workflow**
-
----
-
-## 💡 Why use this?
-
-✅ Prevents **broken citations**  
-✅ Keeps **version metadata consistent**  
-✅ Avoids mismatches between **GitHub releases** and:
-- Python packaging
-- JS packaging
-- Citation metadata
 
 ---
 

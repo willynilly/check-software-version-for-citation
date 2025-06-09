@@ -4,24 +4,32 @@ import argparse
 import logging
 import sys
 
-import packaging.version
-
-from version_consistency.checkers.citation_cff_checker import check_citation_cff
-from version_consistency.checkers.codemeta_json_checker import check_codemeta_json
-from version_consistency.checkers.package_json_checker import check_package_json
-from version_consistency.checkers.pyproject_toml_checker import check_pyproject_toml
-from version_consistency.checkers.setup_py_checker import check_setup_py
-from version_consistency.checkers.zenodo_json_checker import check_zenodo_json
-from version_consistency.extractors.tag_extractor import extract_tag_version
-from version_consistency.log_collector import get_log_collector
-from version_consistency.utils import (
-    parse_version_pep440,
+from version_consistency.checkers.checker import Checker
+from version_consistency.checkers.citation_cff_checker import CitationCffChecker
+from version_consistency.checkers.codemeta_json_checker import CodeMetaJsonChecker
+from version_consistency.checkers.github_event_checker import GitHubEventChecker
+from version_consistency.checkers.package_json_checker import PackageJsonChecker
+from version_consistency.checkers.pyproject_toml_checker import PyprojectTomlChecker
+from version_consistency.checkers.setup_py_checker import SetupPyChecker
+from version_consistency.checkers.zenodo_json_checker import ZenodoJsonChecker
+from version_consistency.extractors.citation_cff_extractor import CitationCffExtractor
+from version_consistency.extractors.cli_extractor import CliExtractor
+from version_consistency.extractors.codemeta_json_extractor import CodeMetaJsonExtractor
+from version_consistency.extractors.github_event_extractor import GitHubEventExtractor
+from version_consistency.extractors.package_json_extractor import PackageJsonExtractor
+from version_consistency.extractors.pyproject_toml_extractor import (
+    PyprojectTomlExtractor,
 )
+from version_consistency.extractors.setup_py_extractor import SetupPyExtractor
+from version_consistency.extractors.zenodo_json_extractor import ZenodoJsonExtractor
+from version_consistency.log_collector import get_log_collector
 
 logger = logging.getLogger(__name__)
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Check tag/release version vs files with canonical PEP 440 tag version")
+    parser = argparse.ArgumentParser(description="Check metadata files for consistent software versions using canonical PEP 440 and SemVer")
+    parser.add_argument('--base-version', required=False, help='A base version from which to check')
+    parser.add_argument('--fail-for-missing-file', required=False, help='Fail for any checked file that is missing')
     parser.add_argument('--check-citation-cff', required=False, help='Check CITATION.cff? (true/false)')
     parser.add_argument('--citation-cff-path', required=False, help='Path to CITATION.cff file')
     parser.add_argument('--check-pyproject-toml', required=False, help='Check pyproject.toml? (true/false)')
@@ -34,10 +42,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--package-json-path', required=False, help='Path to package.json')
     parser.add_argument('--check-setup-py', required=False, help='Check setup.py? (true/false)')
     parser.add_argument('--setup-py-path', required=False, help='Path to setup.py')
-    parser.add_argument('--event-name', required=True, help='GitHub event name (push or release)')
-    parser.add_argument('--ref', required=False, help='GitHub ref (for push)')
-    parser.add_argument('--release-tag', required=False, help='GitHub release tag name (for release)')
-    parser.add_argument('--fail-for-missing-file', required=False, help='Fail for any checked file that is missing')
+    parser.add_argument('--check-github-event', required=False, help='Check GitHub events? (true/false)')
+    parser.add_argument('--github-event-name', required=False, help='GitHub event name (push/release)')
+    parser.add_argument('--github-event-ref', required=False, help='GitHub ref (for push event)')
+    parser.add_argument('--github-event-release-tag', required=False, help='GitHub release tag name (for release event)')
 
     return parser.parse_args()
 
@@ -46,41 +54,70 @@ def parse_args() -> argparse.Namespace:
 def main():
     cli_args: argparse.Namespace = parse_args()
 
-    tag_version_str: str = extract_tag_version(cli_args.event_name, cli_args.ref, cli_args.release_tag)
-    tag_version_pep440: packaging.version.Version = parse_version_pep440(tag_version_str)
+    base_version_str: str | None = CliExtractor(cli_args=cli_args).extract_version()
+
+    checkers: list[Checker] = []
+
+    # GitHub Event
+    if cli_args.check_github_event.lower() == 'true':
+        github_event_extractor: GitHubEventExtractor = GitHubEventExtractor(cli_args=cli_args)
+        github_event_checker: GitHubEventChecker = GitHubEventChecker(extractor=github_event_extractor, cli_args=cli_args)
+        checkers.append(github_event_checker)
 
     # CITATION.cff
     if cli_args.check_citation_cff.lower() == 'true':
-        check_citation_cff(tag_version_str=tag_version_str, tag_version_pep440=tag_version_pep440, cli_args=cli_args)
+        citation_cff_extractor: CitationCffExtractor = CitationCffExtractor(cli_args=cli_args)
+        citation_cff_checker: CitationCffChecker = CitationCffChecker(extractor=citation_cff_extractor, cli_args=cli_args)
+        checkers.append(citation_cff_checker)
 
     # pyproject.toml
     if cli_args.check_pyproject_toml.lower() == 'true':
-        check_pyproject_toml(tag_version_str=tag_version_str, tag_version_pep440=tag_version_pep440, cli_args=cli_args)
+        pyproject_toml_extractor: PyprojectTomlExtractor = PyprojectTomlExtractor(cli_args=cli_args)
+        pyproject_toml_checker: PyprojectTomlChecker = PyprojectTomlChecker(extractor=pyproject_toml_extractor, cli_args=cli_args)
+        checkers.append(pyproject_toml_checker)
 
     # setup.py
     if cli_args.check_setup_py.lower() == 'true':
-        check_setup_py(tag_version_str=tag_version_str, tag_version_pep440=tag_version_pep440, cli_args=cli_args)
-
+        setup_py_extractor: SetupPyExtractor = SetupPyExtractor(cli_args=cli_args)
+        setup_py_checker: SetupPyChecker = SetupPyChecker(extractor=setup_py_extractor, cli_args=cli_args)
+        checkers.append(setup_py_checker)
 
     # package.json
     if cli_args.check_package_json.lower() == 'true':
-        check_package_json(tag_version_pep440=tag_version_pep440, cli_args=cli_args)
+        package_json_extractor: PackageJsonExtractor = PackageJsonExtractor(cli_args=cli_args)
+        package_json_checker: PackageJsonChecker = PackageJsonChecker(extractor=package_json_extractor, cli_args=cli_args)
+        checkers.append(package_json_checker)
         
     # codemeta.json
     if cli_args.check_codemeta_json.lower() == 'true':
-        check_codemeta_json(tag_version_str=tag_version_str, tag_version_pep440=tag_version_pep440, cli_args=cli_args)
+        codemeta_json_extractor: CodeMetaJsonExtractor = CodeMetaJsonExtractor(cli_args=cli_args)
+        codemeta_json_checker: CodeMetaJsonChecker = CodeMetaJsonChecker(extractor=codemeta_json_extractor, cli_args=cli_args)
+        checkers.append(codemeta_json_checker)
 
     # .zenodo.json
     if cli_args.check_zenodo_json.lower() == 'true':
-        check_zenodo_json(tag_version_str=tag_version_str, tag_version_pep440=tag_version_pep440, cli_args=cli_args)
+        zenodo_json_extractor: ZenodoJsonExtractor = ZenodoJsonExtractor(cli_args=cli_args)
+        zenodo_json_checker: ZenodoJsonChecker = ZenodoJsonChecker(extractor=zenodo_json_extractor, cli_args=cli_args)
+        checkers.append(zenodo_json_checker)
 
+    # Loop through checkers
+    for checker in checkers:
+        # find the base version if it does not exist
+        if base_version_str is None and checker.target_version_str is not None:
+            base_version_str = checker.target_version_str
+            logger.info(f'📦 Using base version ({base_version_str}) from {checker.target_name}')
+        else:
+            checker.check(base_version_str=base_version_str)
 
     # Final result
     
     if get_log_collector().get_error_logs():
         sys.exit(1)
     else:
-        logger.info("✅ All versions match!")
+        if base_version_str is None:
+            logger.warning("⚠️ No base version found. No versions to match.")
+        else:
+            logger.info("✅ All versions match!")
 
 if __name__ == '__main__':
     main()

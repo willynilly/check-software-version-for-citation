@@ -1,31 +1,40 @@
 import logging
-from argparse import Namespace
-from pathlib import Path
 
-import packaging.version
-
-from version_consistency.extractors.package_json_extractor import (
-    extract_package_json_version,
-)
-from version_consistency.utils import log_missing_file, parse_version_semver
+from version_consistency.checkers.file_checker import FileChecker
+from version_consistency.utils import parse_version_semver
 
 logger = logging.getLogger(__name__)
 
-def check_package_json(tag_version_pep440:packaging.version.Version, cli_args: Namespace):
-    if Path(cli_args.package_json_path).exists():
-        package_version = extract_package_json_version(cli_args.package_json_path)
-        try:
-            tag_semver_str = f"{tag_version_pep440.major}.{tag_version_pep440.minor}.{tag_version_pep440.micro}"
-            if tag_version_pep440.is_prerelease and tag_version_pep440.pre is not None:
-                tag_semver_str += f"-{tag_version_pep440.pre[0]}.{tag_version_pep440.pre[1]}"
+class PackageJsonChecker(FileChecker):
 
-            tag_semver = parse_version_semver(tag_semver_str)
-            package_v = parse_version_semver(package_version)
+    def check(self, base_version_str: str | None) -> bool:
+        if base_version_str is None:
+            return True
+        base_version_pep440 = self.create_pep440_version(version_str=base_version_str)
+        if base_version_pep440 is None:
+            return True
+        
+        if self.target_exists:
+            target_version_str = self.target_version_str
+            target_name = self.target_name
 
-            if tag_semver != package_v:
-                logger.error(f"Version mismatch: {cli_args.package_json_path or 'package.json'} {package_version} != tag {tag_semver_str}")
-        except Exception as e:
-            logger.error(f"❌ Parse error: Could not parse tag version as SemVer for {cli_args.package_json_path or 'package.json'}: {e}")
-    else:
-        msg = f"package_json_path file does not exist: {cli_args.package_json_path or 'package.json'}"
-        log_missing_file(logger=logger, msg=msg, cli_args=cli_args)
+            try:
+                base_version_semver_str: str = f"{base_version_pep440.major}.{base_version_pep440.minor}.{base_version_pep440.micro}"
+                if base_version_pep440.is_prerelease and base_version_pep440.pre is not None:
+                    base_version_semver_str += f"-{base_version_pep440.pre[0]}.{base_version_pep440.pre[1]}"
+
+                base_version_semver = parse_version_semver(base_version_semver_str)
+                target_version_semver = parse_version_semver(target_version_str)
+
+                if base_version_semver != target_version_semver:
+                    logger.error(f"❌ Version mismatch: {target_name} {target_version_str} != base_version {base_version_str}")
+                    return False
+                else:
+                    return True
+            
+            except Exception as e:
+                logger.error(f"❌ Parse error: Could not parse tag version as SemVer for {self.target_name}: {e}")
+                return False
+        else:
+            self._log_missing_target()
+            return False

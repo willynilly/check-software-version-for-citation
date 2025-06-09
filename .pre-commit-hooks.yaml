@@ -1,0 +1,8 @@
+# .pre-commit-hooks.yaml
+- id: version-consistency
+  name: Version Consistency Checker
+  description: Checks that version metadata is consistent across project files.
+  entry: version-consistency
+  language: python
+  types: [yaml, json, python]  # optional — can be empty
+  pass_filenames: false
