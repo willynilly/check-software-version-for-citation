@@ -12,10 +12,11 @@ authors:
 repository-code: >-
   https://github.com/willynilly/version-consistency
 abstract: >-
-  Automatically ensures your GitHub tag or release version matches the version declared in your project's key metadata files.
+  Automatically ensures your software version metadata is consistent across key project files.
 keywords:
   - version
   - software quality
+  - DevOps
   - CI/CD
   - GitHub Action
   - pyproject.toml
@@ -29,9 +30,10 @@ keywords:
   - CFF
   - citation 
   - metadata
+  - harmonization
 license: Apache-2.0
 version: "1.0.0"
-date-released: "2025-06-09"
+date-released: "2025-06-10"
 references:
   - title: Citation File Format
     version: 1.2.0
