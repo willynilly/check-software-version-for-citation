@@ -7,10 +7,10 @@ name = "version-consistency"
 version = "1.0.0"
 description = "Automatically ensures your GitHub tag or release version matches the version declared in your project's key metadata files."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICEN[CS]E*"]
-keywords = ["version", "GitHub Action", "pyproject.toml", "package.json", "setup.py", "codemeta.json", ".zenodo.json", "Zenodo", "CodeMeta", "CITATION.cff", "CFF", "citation", "metadata"]
+keywords = ["version", "software quality", "CI/CD", "GitHub Action", "pyproject.toml", "package.json", "setup.py", "codemeta.json", ".zenodo.json", "Zenodo", "CodeMeta", "CITATION.cff", "CFF", "citation", "metadata"]
 authors = [
   { name = "Will Riley", email = "wanderingwill@gmail.com" },
 ]

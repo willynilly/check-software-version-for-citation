@@ -14,11 +14,14 @@ jobs:
 
     steps:
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.13.3" # required for version-consistency
-          cache: 'pip' # optional for version-consistency
+          python-version: ">=3.12" # required by version-consistency
+          cache: 'pip' # optional
 
       - name: Run version-consistency
         uses: willynilly/version-consistency@v1.0.0

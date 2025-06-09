@@ -8,50 +8,6 @@ description: >
 author: Your Name <your-email@example.com>
 
 inputs:
-  cff_path:
-    description: 'Path to CITATION.cff'
-    required: false
-    default: 'CITATION.cff'
-  check_pyproject_toml:
-    description: 'Also check pyproject.toml? (true/false)'
-    required: false
-    default: 'false'
-  pyproject_toml_path:
-    description: 'Path to pyproject.toml'
-    required: false
-    default: 'pyproject.toml'
-  check_codemeta_json:
-    description: 'Also check codemeta.json? (true/false)'
-    required: false
-    default: 'false'
-  codemeta_json_path:
-    description: 'Path to codemeta.json'
-    required: false
-    default: 'codemeta.json'
-  check_zenodo_json:
-    description: 'Also check .zenodo.json? (true/false)'
-    required: false
-    default: 'false'
-  zenodo_json_path:
-    description: 'Path to .zenodo.json'
-    required: false
-    default: '.zenodo.json'
-  check_package_json:
-    description: 'Also check package.json? (true/false)'
-    required: false
-    default: 'false'
-  package_json_path:
-    description: 'Path to package.json'
-    required: false
-    default: 'package.json'
-  check_setup_py:
-    description: 'Also check setup.py? (true/false)'
-    required: false
-    default: 'false'
-  setup_py_path:
-    description: 'Path to setup.py'
-    required: false
-    default: 'setup.py'
   event_name:
     description: 'GitHub event name (push or release)'
     required: true
@@ -61,12 +17,62 @@ inputs:
   release_tag:
     description: 'GitHub release tag name (for release)'
     required: false
-
+  fail_for_missing_file:
+    description: 'Fail for any checked file that is missing'
+    required: false
+    default: 'false'
+  check_citation_cff:
+    description: 'Check `CITATION.cff`? (`true/false`)'
+    required: false
+    default: 'true'
+  citation_cff_path:
+    description: 'Path to CITATION.cff'
+    required: false
+    default: 'CITATION.cff'
+  check_pyproject_toml:
+    description: 'Check pyproject.toml? (true/false)'
+    required: false
+    default: 'true'
+  pyproject_toml_path:
+    description: 'Path to pyproject.toml'
+    required: false
+    default: 'pyproject.toml'
+  check_codemeta_json:
+    description: 'Check codemeta.json? (true/false)'
+    required: false
+    default: 'true'
+  codemeta_json_path:
+    description: 'Path to codemeta.json'
+    required: false
+    default: 'codemeta.json'
+  check_zenodo_json:
+    description: 'Check .zenodo.json? (true/false)'
+    required: false
+    default: 'true'
+  zenodo_json_path:
+    description: 'Path to .zenodo.json'
+    required: false
+    default: '.zenodo.json'
+  check_package_json:
+    description: 'Check package.json? (true/false)'
+    required: false
+    default: 'true'
+  package_json_path:
+    description: 'Path to package.json'
+    required: false
+    default: 'package.json'
+  check_setup_py:
+    description: 'Check setup.py? (true/false)'
+    required: false
+    default: 'true'
+  setup_py_path:
+    description: 'Path to setup.py'
+    required: false
+    default: 'setup.py'
+  
 runs:
   using: "composite"
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
 
     - name: Install action with pip
       run: pip install --force-reinstall ${{ github.action_path }} # the --force-reinstall avoids caching issues from external dependencies which may rely on this action
@@ -74,5 +80,5 @@ runs:
 
     - name: Run version-consistency
       id: check_version
-      run: version-consistency --cff-path "${{ inputs.cff_path }}" --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" --pyproject-toml-path "${{ inputs.pyproject_toml_path }}"           --check-codemeta-json "${{ inputs.check_codemeta_json }}"           --codemeta-json-path "${{ inputs.codemeta_json_path }}"           --check-zenodo-json "${{ inputs.check_zenodo_json }}"           --zenodo-json-path "${{ inputs.zenodo_json_path }}"           --check-package-json "${{ inputs.check_package_json }}"           --package-json-path "${{ inputs.package_json_path }}"           --check-setup-py "${{ inputs.check_setup_py }}"           --setup-py-path "${{ inputs.setup_py_path }}"           --event-name "${{ inputs.event_name }}"           --ref "${{ inputs.ref }}"           --release-tag "${{ inputs.release_tag }}"
+      run: version-consistency --check-citation-cff "${{ inputs.check_citation_cff }}" --citation-cff-path "${{ inputs.citation_cff_path }}" --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" --check-codemeta-json "${{ inputs.check_codemeta_json }}" --codemeta-json-path "${{ inputs.codemeta_json_path }}" --check-zenodo-json "${{ inputs.check_zenodo_json }}" --zenodo-json-path "${{ inputs.zenodo_json_path }}" --check-package-json "${{ inputs.check_package_json }}" --package-json-path "${{ inputs.package_json_path }}" --check-setup-py "${{ inputs.check_setup_py }}" --setup-py-path "${{ inputs.setup_py_path }}" --event-name "${{ inputs.event_name }}" --ref "${{ inputs.ref }}" --release-tag "${{ inputs.release_tag }}"
       shell: bash

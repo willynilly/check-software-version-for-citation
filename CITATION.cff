@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: cff-author-updater
+title: version-consistency
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -10,47 +10,29 @@ authors:
     email: wanderingwill@gmail.com
     orcid: "https://orcid.org/0000-0003-1822-6756"
 repository-code: >-
-  https://github.com/willynilly/action-update-cff-authors
+  https://github.com/willynilly/version-consistency
 abstract: >-
-  GitHub Action to update authors in CITATION.cff file based on pull request contributions. It posts a pull request comment with updated CFF and qualifying contributions from new authors.
+  Automatically ensures your GitHub tag or release version matches the version declared in your project's key metadata files.
 keywords:
+  - version
+  - software quality
+  - CI/CD
+  - GitHub Action
+  - pyproject.toml
+  - package.json, 
+  - setup.py
+  - codemeta.json 
+  - .zenodo.json
+  - Zenodo
+  - CodeMeta
+  - CITATION.cff
   - CFF
-  - citation
-  - GitHub
+  - citation 
   - metadata
 license: Apache-2.0
-version: "2.3.0"
-date-released: "2025-05-27"
+version: "1.0.0"
+date-released: "2025-06-09"
 references:
-  - title: cffconvert
-    version: 2.0.0
-    type: software
-    abstract: Command line program to validate and convert CITATION.cff files.
-    authors:
-      - affiliation: Netherlands eScience Center
-        family-names: Spaaks
-        given-names: Jurriaan H.
-        orcid: https://orcid.org/0000-0002-7064-4069
-      - affiliation: Netherlands eScience Center
-        family-names: Klaver
-        given-names: Tom
-      - affiliation: Netherlands eScience Center
-        family-names: Verhoeven
-        given-names: Stefan
-        orcid: https://orcid.org/0000-0002-5821-2060
-      - affiliation: Humboldt-Universität zu Berlin
-        family-names: Druskat
-        given-names: Stephan
-        orcid: https://orcid.org/0000-0003-4925-7248
-      - affiliation: University of Oslo
-        family-names: Leoncio
-        given-names: Waldir
-        name-suffix: Netto
-    date-released: 2021-09-22
-    doi: 10.5281/zenodo.5521767
-    license: Apache-2.0
-    repository-artifact: https://pypi.org/project/cffconvert
-    repository-code: https://github.com/citation-file-format/cff-converter-python
   - title: Citation File Format
     version: 1.2.0
     type: standard

@@ -80,11 +80,14 @@ jobs:
 
     steps:
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.13.3" # required for version-consistency
-          cache: 'pip' # optional for version-consistency
+          python-version: ">=3.12" # required by version-consistency
+          cache: 'pip' # optional
 
       - name: Run version-consistency
         uses: willynilly/version-consistency@v1.0.0
@@ -126,15 +129,15 @@ jobs:
 | `fail_for_missing_file`                          | Fail for any checked file that is missing                 | `false`      |
 | `check_citation_cff`                     | Check `CITATION.cff`? (`true/false`)                   | `true`    |
 | `citation_cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
-| `check_pyproject_toml`         | Check `pyproject.toml`? (`true/false`)   | `false`           |
+| `check_pyproject_toml`         | Check `pyproject.toml`? (`true/false`)   | `true`           |
 | `pyproject_toml_path`          | Path to `pyproject.toml`                 | `pyproject.toml`  |
-| `check_codemeta_json`          | Check `codemeta.json`? (`true/false`)    | `false`           |
+| `check_codemeta_json`          | Check `codemeta.json`? (`true/false`)    | `true`           |
 | `codemeta_json_path`           | Path to `codemeta.json`                  | `codemeta.json`   |
-| `check_zenodo_json`            | Check `.zenodo.json`? (`true/false`)     | `false`           |
+| `check_zenodo_json`            | Check `.zenodo.json`? (`true/false`)     | `true`           |
 | `zenodo_json_path`             | Path to `.zenodo.json`                   | `.zenodo.json`    |
-| `check_package_json`           | Check `package.json`? (`true/false`)     | `false`           |
+| `check_package_json`           | Check `package.json`? (`true/false`)     | `true`           |
 | `package_json_path`            | Path to `package.json`                   | `package.json`    |
-| `check_setup_py`               | Check `setup.py`? (`true/false`)         | `false`           |
+| `check_setup_py`               | Check `setup.py`? (`true/false`)         | `true`           |
 | `setup_py_path`                | Path to `setup.py`                       | `setup.py`        |
 
 ---
