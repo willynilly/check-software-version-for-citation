@@ -28,15 +28,15 @@ class Checker():
     
     @property
     def target_exists(self) -> bool:
-        return self.extractor.target_exists()
+        return self.extractor.target_exists
 
     @property    
     def target_name(self) -> str | None:
-        return self.extractor.target_name()
+        return self.extractor.target_name
     
     @property
     def target_cli_parameter_name(self) -> str | None:
-        return self.extractor.target_cli_parameter_name()
+        return self.extractor.target_cli_parameter_name
     
     def check(self, base_version_str: str | None) -> bool:
         if not base_version_str:

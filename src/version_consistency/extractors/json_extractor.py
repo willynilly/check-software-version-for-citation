@@ -7,6 +7,7 @@ class JsonExtractor(FileExtractor):
 
     def _get_data(self) -> dict:
         data = {}
-        with open(self.target_file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        if self.target_file_path:
+            with open(self.target_file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
         return data

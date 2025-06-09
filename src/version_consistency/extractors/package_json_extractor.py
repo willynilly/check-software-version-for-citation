@@ -8,10 +8,12 @@ logger = logging.getLogger(__name__)
 class PackageJsonExtractor(JsonExtractor):
 
     def __init__(self, cli_args: Namespace):
+        target_cli_parameter_name: str = '--package-json-path'
+        default_target_name: str = "package.json"
         super().__init__(
-            target_file_path=cli_args.package_json_path, 
-            default_target_name="package.json", 
-            target_cli_parameter_name="--package-json-path"
+            target_file_path=self._create_target_file_path_from_cli_arg(cli_args=cli_args, cli_arg_parameter=target_cli_parameter_name), 
+            default_target_name=default_target_name, 
+            target_cli_parameter_name=target_cli_parameter_name
         )
 
     def _get_version_from_data(self, data: dict) -> str | None:

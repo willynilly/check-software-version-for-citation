@@ -11,16 +11,19 @@ class CliExtractor(Extractor):
         self._cli_args = cli_args
 
     def extract_version(self) -> str | None:
-        if self.target_exists():
+        if self.target_exists:
             return self._cli_args.base_version
         else:
             return None
     
+    @property
     def target_exists(self) -> bool:
         return hasattr(self._cli_args, 'base_version') and self._cli_args.base_version is not None
     
+    @property
     def target_name(self) -> str | None:
         return 'CLI parameter'
     
+    @property
     def target_cli_parameter_name(self) -> str | None:
         return '--base-version'

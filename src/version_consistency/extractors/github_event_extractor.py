@@ -16,12 +16,15 @@ class GitHubEventExtractor(Extractor):
             'github_event_release_tag': cli_args.github_event_release_tag
         }
 
+    @property
     def target_exists(self) -> bool:
         return self._data is not None and self._data['github_event_name'] is not None
     
+    @property
     def target_name(self) -> str | None:
         return self._data['github_event_name']
     
+    @property
     def target_cli_parameter_name(self) -> str | None:
         return '--github-event-name'
 
