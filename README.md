@@ -170,7 +170,7 @@ jobs:
           cache: 'pip'
 
       - name: Run same-version
-        uses: willynilly/same-version@v2.0.0
+        uses: willynilly/same-version@v3.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -220,7 +220,7 @@ jobs:
           cache: 'pip'
 
       - name: Run same-version
-        uses: willynilly/same-version@v2.0.0
+        uses: willynilly/same-version@v3.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -257,7 +257,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v2.0.0  # Use latest tag
+    rev: v3.0.0  # Use latest tag
     hooks:
       - id: same-version
 ```

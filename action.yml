@@ -84,7 +84,8 @@ runs:
 
     - name: Run same-version
       id: check_same_version
-      run: same-version \
+      run: |
+        same-version \
         --check-citation-cff "${{ inputs.check_citation_cff }}" \
         --citation-cff-path "${{ inputs.citation_cff_path }}" \
         --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" \
