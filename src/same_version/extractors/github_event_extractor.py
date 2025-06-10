@@ -55,6 +55,7 @@ class GitHubEventExtractor(Extractor):
             logger.info(f"📦 Detected GitHub release tag version: {version}")
             return version
         elif event_name == 'pull_request':
+            logger.info("📦 Detected GitHub pull request")
             return None
         else:
             logger.error(f"❌ Unsupported GitHub event: {event_name}")

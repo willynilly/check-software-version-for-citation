@@ -8,19 +8,23 @@ description: >
 author: Will Riley <wanderingwill@gmail.com>
 
 inputs:
+  fail_for_missing_file:
+    description: 'Fail for any checked file that is missing'
+    required: false
+    default: 'false'
+  check_github_event:
+    description: 'check-github-event'
+    required: false
+    default: 'false'
   github_event_name:
-    description: 'GitHub event name (push or release)'
-    required: true
+    description: 'GitHub event name (push, release, or pull_request event)'
+    required: false
   github_event_ref:
     description: 'GitHub ref (for push event)'
     required: false
   github_event_release_tag:
     description: 'GitHub release tag name (for release event)'
     required: false
-  fail_for_missing_file:
-    description: 'Fail for any checked file that is missing'
-    required: false
-    default: 'false'
   check_citation_cff:
     description: 'Check `CITATION.cff`? (`true/false`)'
     required: false
@@ -80,5 +84,22 @@ runs:
 
     - name: Run same-version
       id: check_same_version
-      run: same-version --check-citation-cff "${{ inputs.check_citation_cff }}" --citation-cff-path "${{ inputs.citation_cff_path }}" --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" --check-codemeta-json "${{ inputs.check_codemeta_json }}" --codemeta-json-path "${{ inputs.codemeta_json_path }}" --check-zenodo-json "${{ inputs.check_zenodo_json }}" --zenodo-json-path "${{ inputs.zenodo_json_path }}" --check-package-json "${{ inputs.check_package_json }}" --package-json-path "${{ inputs.package_json_path }}" --check-setup-py "${{ inputs.check_setup_py }}" --setup-py-path "${{ inputs.setup_py_path }}" --check-github-event "${{ inputs.check_github_event }}" --github-event-name "${{ inputs.event_name }}" --github-event-ref "${{ inputs.ref }}" --github-event-release-tag "${{ inputs.release_tag }}" --fail-for-missing-file "${{ inputs.fail_for_missing_file }}"
+      run: same-version \
+        --check-citation-cff "${{ inputs.check_citation_cff }}" \
+        --citation-cff-path "${{ inputs.citation_cff_path }}" \
+        --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" \
+        --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" \
+        --check-codemeta-json "${{ inputs.check_codemeta_json }}" \
+        --codemeta-json-path "${{ inputs.codemeta_json_path }}" \
+        --check-zenodo-json "${{ inputs.check_zenodo_json }}" \
+        --zenodo-json-path "${{ inputs.zenodo_json_path }}" \
+        --check-package-json "${{ inputs.check_package_json }}" \
+        --package-json-path "${{ inputs.package_json_path }}" \
+        --check-setup-py "${{ inputs.check_setup_py }}" \
+        --setup-py-path "${{ inputs.setup_py_path }}" \
+        --check-github-event "${{ inputs.check_github_event }}" \
+        --github-event-name "${{ inputs.github_event_name }}" \
+        --github-event-ref "${{ inputs.github_event_ref }}" \
+        --github-event-release-tag "${{ inputs.github_event_release_tag }}" \
+        --fail-for-missing-file "${{ inputs.fail_for_missing_file }}"
       shell: bash

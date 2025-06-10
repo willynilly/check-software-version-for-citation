@@ -100,7 +100,7 @@ These files are currently supported out-of-the-box:
 |-------------------------------|-----------------------------------------|--------------------|---------------------|-------------------|
 | `--base-version`         | `base_version`                     | Base version from which to compare all other versions  | No | *(empty)*      |
 | `--check-github-event`         | `check_github_event`                     | Check GitHut events? (`true` or `false`)  | No | `false`      |
-| `--github-event-name`         | `github_event_name`                     | GitHub event name (`push` or `release`) | No  | *(empty)*      |
+| `--github-event-name`         | `github_event_name`                     | GitHub event name (`push` or `release` or `pull_request`) | No  | *(empty)*      |
 | `--github-event-ref`                | `github_event_ref`                            | GitHub ref (for `push` event)       | No           | *(empty)*      |
 | `--github-event-release-tag`        | `github_event_release_tag`                    | GitHub release tag name (for `release` event)  | No | *(empty)*      |
 | `--fail-for-missing-file`     | `fail_for_missing_file`                 | Fail for any checked file that is missing| No | `false`           |
@@ -170,7 +170,7 @@ jobs:
           cache: 'pip'
 
       - name: Run same-version
-        uses: willynilly/same-version@v1.0.0
+        uses: willynilly/same-version@v2.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -220,7 +220,7 @@ jobs:
           cache: 'pip'
 
       - name: Run same-version
-        uses: willynilly/same-version@v1.0.0
+        uses: willynilly/same-version@v2.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -257,7 +257,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v1.0.0  # Use latest tag
+    rev: v2.0.0  # Use latest tag
     hooks:
       - id: same-version
 ```
