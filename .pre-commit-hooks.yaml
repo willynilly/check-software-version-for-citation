@@ -1,8 +1,7 @@
 # .pre-commit-hooks.yaml
 - id: same-version
-  name: Same Version
+  name: same-version
   description: Checks that software version metadata is consistent across project files.
   entry: same-version
   language: python
-  types: [yaml, json, python]  # optional — can be empty
   pass_filenames: false
