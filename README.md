@@ -96,26 +96,26 @@ These files are currently supported out-of-the-box:
 
 ## ⚙️ Inputs
 
-| CLI Parameter                 | GitHub Action Input                     | Description                             | Default           |
-|-------------------------------|-----------------------------------------|-----------------------------------------|-------------------|
-| `--base-version`         | `base_version`                     | Base version from which to compare all other versions  | *(optional)*      |
-| `--check-github-event`         | `check_github_event`                     | Check GitHut events? (`true` or `false`)  | `false`      |
-| `--github-event-name`         | `github_event_name`                     | GitHub event name (`push` or `release`)  | *(optional)*      |
-| `--github-event-ref`                | `github_event_ref`                            | GitHub ref (for `push` event)                  | *(optional)*      |
-| `--github-event-release-tag`        | `github_event_release_tag`                    | GitHub release tag name (for `release` event)  | *(optional)*      |
-| `--fail-for-missing-file`     | `fail_for_missing_file`                 | Fail for any checked file that is missing| `false`           |
-| `--check-citation-cff`        | `check_citation_cff`                    | Check `CITATION.cff`? (`true/false`)     | `true`            |
-| `--citation-cff-path`         | `citation_cff_path`                     | Path to `CITATION.cff`                   | `CITATION.cff`    |
-| `--check-pyproject-toml`      | `check_pyproject_toml`                  | Check `pyproject.toml`? (`true/false`)   | `true`            |
-| `--pyproject-toml-path`       | `pyproject_toml_path`                   | Path to `pyproject.toml`                 | `pyproject.toml`  |
-| `--check-codemeta-json`       | `check_codemeta_json`                   | Check `codemeta.json`? (`true/false`)    | `true`            |
-| `--codemeta-json-path`        | `codemeta_json_path`                    | Path to `codemeta.json`                  | `codemeta.json`   |
-| `--check-zenodo-json`         | `check_zenodo_json`                     | Check `.zenodo.json`? (`true/false`)     | `true`            |
-| `--zenodo-json-path`          | `zenodo_json_path`                      | Path to `.zenodo.json`                   | `.zenodo.json`    |
-| `--check-package-json`        | `check_package_json`                    | Check `package.json`? (`true/false`)     | `true`            |
-| `--package-json-path`         | `package_json_path`                     | Path to `package.json`                   | `package.json`    |
-| `--check-setup-py`            | `check_setup_py`                        | Check `setup.py`? (`true/false`)         | `true`            |
-| `--setup-py-path`             | `setup_py_path`                         | Path to `setup.py`                       | `setup.py`        |
+| CLI Parameter                 | GitHub Action Input                     | Description            | Required                 | Default           |
+|-------------------------------|-----------------------------------------|--------------------|---------------------|-------------------|
+| `--base-version`         | `base_version`                     | Base version from which to compare all other versions  | No | *(empty)*      |
+| `--check-github-event`         | `check_github_event`                     | Check GitHut events? (`true` or `false`)  | No | `false`      |
+| `--github-event-name`         | `github_event_name`                     | GitHub event name (`push` or `release`) | No  | *(empty)*      |
+| `--github-event-ref`                | `github_event_ref`                            | GitHub ref (for `push` event)       | No           | *(empty)*      |
+| `--github-event-release-tag`        | `github_event_release_tag`                    | GitHub release tag name (for `release` event)  | No | *(empty)*      |
+| `--fail-for-missing-file`     | `fail_for_missing_file`                 | Fail for any checked file that is missing| No | `false`           |
+| `--check-citation-cff`        | `check_citation_cff`                    | Check `CITATION.cff`? (`true/false`)   | No  | `true`            |
+| `--citation-cff-path`         | `citation_cff_path`                     | Path to `CITATION.cff`             | No      | `CITATION.cff`    |
+| `--check-pyproject-toml`      | `check_pyproject_toml`                  | Check `pyproject.toml`? (`true/false`)  | No  | `true`            |
+| `--pyproject-toml-path`       | `pyproject_toml_path`                   | Path to `pyproject.toml`         | No        | `pyproject.toml`  |
+| `--check-codemeta-json`       | `check_codemeta_json`                   | Check `codemeta.json`? (`true/false`)  | No  | `true`            |
+| `--codemeta-json-path`        | `codemeta_json_path`                    | Path to `codemeta.json`             | No     | `codemeta.json`   |
+| `--check-zenodo-json`         | `check_zenodo_json`                     | Check `.zenodo.json`? (`true/false`)  | No   | `true`            |
+| `--zenodo-json-path`          | `zenodo_json_path`                      | Path to `.zenodo.json`              | No     | `.zenodo.json`    |
+| `--check-package-json`        | `check_package_json`                    | Check `package.json`? (`true/false`)  | No   | `true`            |
+| `--package-json-path`         | `package_json_path`                     | Path to `package.json`               | No    | `package.json`    |
+| `--check-setup-py`            | `check_setup_py`                        | Check `setup.py`? (`true/false`)     | No    | `true`            |
+| `--setup-py-path`             | `setup_py_path`                         | Path to `setup.py`                 | No      | `setup.py`        |
 
 ---
 

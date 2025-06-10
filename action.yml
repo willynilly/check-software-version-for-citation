@@ -79,6 +79,6 @@ runs:
       shell: bash
 
     - name: Run same-version
-      id: check_version
+      id: check_same_version
       run: same-version --check-citation-cff "${{ inputs.check_citation_cff }}" --citation-cff-path "${{ inputs.citation_cff_path }}" --check-pyproject-toml "${{ inputs.check_pyproject_toml }}" --pyproject-toml-path "${{ inputs.pyproject_toml_path }}" --check-codemeta-json "${{ inputs.check_codemeta_json }}" --codemeta-json-path "${{ inputs.codemeta_json_path }}" --check-zenodo-json "${{ inputs.check_zenodo_json }}" --zenodo-json-path "${{ inputs.zenodo_json_path }}" --check-package-json "${{ inputs.check_package_json }}" --package-json-path "${{ inputs.package_json_path }}" --check-setup-py "${{ inputs.check_setup_py }}" --setup-py-path "${{ inputs.setup_py_path }}" --check-github-event "${{ inputs.check_github_event }}" --github-event-name "${{ inputs.event_name }}" --github-event-ref "${{ inputs.ref }}" --github-event-release-tag "${{ inputs.release_tag }}" --fail-for-missing-file "${{ inputs.fail_for_missing_file }}"
       shell: bash
