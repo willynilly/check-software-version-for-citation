@@ -27,7 +27,7 @@ class PackageJsonChecker(FileChecker):
                 target_version_semver = parse_version_semver(target_version_str)
 
                 if base_version_semver != target_version_semver:
-                    logger.error(f"❌ Version mismatch: {target_name} {target_version_str} != base_version {base_version_str}")
+                    logger.error(f"❌ Version mismatch: {target_name} {target_version_str} != base version {base_version_str}")
                     return False
                 else:
                     return True

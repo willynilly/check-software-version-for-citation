@@ -23,7 +23,9 @@ class Extractor:
         data: dict = self._get_data()
         version = self._get_version_from_data(data=data)
         if not version:
-            self._log_missing_version_error(data=data)
+            if self.target_exists:
+                # only print this error if the target exists
+                self._log_missing_version_error(data=data)
             return None
         self._log_found_version_info(version=version, data=data)
         return version

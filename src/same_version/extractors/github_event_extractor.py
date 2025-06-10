@@ -11,9 +11,9 @@ class GitHubEventExtractor(Extractor):
     def __init__(self, cli_args: Namespace):
         super().__init__()
         self._data: dict[str, str | None] = {
-            'github_event_name': cli_args.github_event_name, 
-            'github_event_ref': cli_args.github_event_ref, 
-            'github_event_release_tag': cli_args.github_event_release_tag
+            'github_event_name': getattr(cli_args, 'github_event_name', None), 
+            'github_event_ref': getattr(cli_args, 'github_event_ref', None), 
+            'github_event_release_tag': getattr(cli_args, 'github_event_release_tag', None)
         }
 
     @property
@@ -22,7 +22,7 @@ class GitHubEventExtractor(Extractor):
     
     @property
     def target_name(self) -> str | None:
-        return self._data['github_event_name']
+        return self._data.get('github_event_name', None)
     
     @property
     def target_cli_parameter_name(self) -> str | None:
