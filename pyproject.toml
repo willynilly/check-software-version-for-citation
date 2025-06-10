@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "same-version"
-version = "3.0.0"
+version = "2.0.0"
 description = "Automatically ensures your software version metadata is consistent across key project files."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICEN[CS]E*"]
-keywords = ["version", "software quality", "DevOps", "CI/CD", "GitHub Action", "pyproject.toml", "package.json", "setup.py", "codemeta.json", ".zenodo.json", "Zenodo", "CodeMeta", "CITATION.cff", "CFF", "citation", "metadata", "harmonization"]
+keywords = ["open science", "FAIR", "version", "software quality", "DevOps", "CI/CD", "GitHub Action", "pyproject.toml", "package.json", "setup.py", "codemeta.json", ".zenodo.json", "Zenodo", "CodeMeta", "CITATION.cff", "CFF", "citation", "metadata", "harmonization"]
 authors = [
   { name = "Will Riley", email = "wanderingwill@gmail.com" },
 ]
