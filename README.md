@@ -184,7 +184,7 @@ These files are currently supported out-of-the-box:
 #### To block inconsistent pull requests:
 
 ```yaml
-name: Check version consistency on pull requests
+name: Check version consistency on pull requests for Python project using pyproject.toml
 
 on:
   pull_request:
@@ -204,33 +204,24 @@ jobs:
           cache: 'pip'
 
       - name: Run same-version
-        uses: willynilly/same-version@v3.0.0
+        uses: willynilly/same-version@v4.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
           github_event_name: ${{ github.event_name }}
           github_event_ref: ${{ github.ref }}
           github_event_release_tag: ${{ github.event.release.tag_name }}
-          check_citation_cff: true
-          citation_cff_path: CITATION.cff
           check_pyproject_toml: true
-          pyproject_toml_path: pyproject.toml
+          check_citation_cff: true
           check_codemeta_json: true
-          codemeta_json_path: codemeta.json
           check_zenodo_json: true
-          zenodo_json_path: .zenodo.json
-          check_package_json: true
-          package_json_path: package.json
-          check_setup_py: true
-          setup_py_path: setup.py
-          check_r_description: true
-          r_description_path: DESCRIPTION
-          check_composer_json: true
-          composer_json_path: composer.json
-          check_pom_xml: true
-          pom_xml_path: pom.xml
-          check_cargo_toml: true
-          cargo_toml_path: Cargo.toml
+          check_setup_py: false
+          check_r_description: false
+          check_cargo_toml: false
+          check_py_version_assignment: false
+          check_pom_xml: false
+          check_composer_json: false
+          check_ro_crate_metadata_json: false
 ```
 
 ---
@@ -238,7 +229,7 @@ jobs:
 #### To report (BUT NOT BLOCK) incorrect tags/releases:
 
 ```yaml
-name: Check version consistency on tags/releases
+name: Check version consistency on tags/releases for Python project using pyproject.toml
 
 on:
   push:
@@ -262,33 +253,24 @@ jobs:
           cache: 'pip'
 
       - name: Run same-version
-        uses: willynilly/same-version@v3.0.0
+        uses: willynilly/same-version@v4.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
           github_event_name: ${{ github.event_name }}
           github_event_ref: ${{ github.ref }}
           github_event_release_tag: ${{ github.event.release.tag_name }}
-          check_citation_cff: true
-          citation_cff_path: CITATION.cff
           check_pyproject_toml: true
-          pyproject_toml_path: pyproject.toml
+          check_citation_cff: true
           check_codemeta_json: true
-          codemeta_json_path: codemeta.json
           check_zenodo_json: true
-          zenodo_json_path: .zenodo.json
-          check_package_json: true
-          package_json_path: package.json
-          check_setup_py: true
-          setup_py_path: setup.py
-          check_r_description: true
-          r_description_path: DESCRIPTION
-          check_composer_json: true
-          composer_json_path: composer.json
-          check_pom_xml: true
-          pom_xml_path: pom.xml
-          check_cargo_toml: true
-          cargo_toml_path: Cargo.toml
+          check_setup_py: false
+          check_r_description: false
+          check_cargo_toml: false
+          check_py_version_assignment: false
+          check_pom_xml: false
+          check_composer_json: false
+          check_ro_crate_metadata_json: false
 ```
 
 ---
@@ -307,7 +289,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v3.0.0  # Use latest tag
+    rev: v4.0.0  # Use latest tag
     hooks:
       - id: same-version
 ```

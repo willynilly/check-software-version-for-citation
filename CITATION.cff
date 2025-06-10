@@ -14,6 +14,8 @@ repository-code: >-
 abstract: >-
   Automatically ensures your software version metadata is consistent across key project files.
 keywords:
+  - Open Science
+  - FAIR
   - version
   - software quality
   - DevOps
@@ -32,7 +34,7 @@ keywords:
   - metadata
   - harmonization
 license: Apache-2.0
-version: "3.0.0"
+version: "4.0.0"
 date-released: "2025-06-10"
 references:
   - title: Citation File Format

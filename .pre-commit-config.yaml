@@ -1,5 +1,8 @@
 repos:
-  - repo: https://github.com/willynilly/same-version
-    rev: v3.0.0  # Use latest tag
+  - repo: local
     hooks:
-      - id: same-version
+      -   id: same-version
+          name: same-version
+          entry: same-version
+          language: system
+          pass_filenames: false
