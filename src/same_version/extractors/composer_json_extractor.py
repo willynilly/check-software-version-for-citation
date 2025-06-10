@@ -5,11 +5,11 @@ from same_version.extractors.json_extractor import JsonExtractor
 
 logger = logging.getLogger(__name__)
 
-class PackageJsonExtractor(JsonExtractor):
+class ComposerJsonExtractor(JsonExtractor):
 
     def __init__(self, cli_args: Namespace):
-        target_cli_parameter_name: str = '--package-json-path'
-        default_target_name: str = "package.json"
+        target_cli_parameter_name: str = '--composer-json-path'
+        default_target_name: str = "composer.json"
         super().__init__(
             target_file_path=self._create_target_file_path_from_cli_arg(cli_args=cli_args, cli_arg_parameter=target_cli_parameter_name), 
             default_target_name=default_target_name, 

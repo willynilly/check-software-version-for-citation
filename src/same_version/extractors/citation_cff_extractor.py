@@ -1,13 +1,11 @@
 import logging
 from argparse import Namespace
 
-import yaml
-
-from same_version.extractors.file_extractor import FileExtractor
+from same_version.extractors.yaml_extractor import YamlExtractor
 
 logger = logging.getLogger(__name__)
 
-class CitationCffExtractor(FileExtractor):
+class CitationCffExtractor(YamlExtractor):
 
     def __init__(self, cli_args: Namespace):
         target_cli_parameter_name: str = '--citation-cff-path'
@@ -18,14 +16,7 @@ class CitationCffExtractor(FileExtractor):
             target_cli_parameter_name=target_cli_parameter_name
         )
     
-    def extract_version(self) -> str | None:
-        data: dict = {}
-        if self.target_file_path:
-            with open(self.target_file_path, 'r', encoding='utf-8') as f:
-                data = yaml.safe_load(f)
-        version = data.get('version')
-        if not version:
-            logger.error(f"❌ {self.target_name} missing 'version' field!")
-            return None
-        logger.info(f"📖 {self.target_name} version: {version}")
+    
+    def _get_version_from_data(self, data: dict) -> str | None:
+        version = data.get('version', None)
         return version

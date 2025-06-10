@@ -18,5 +18,5 @@ class CodeMetaJsonExtractor(JsonExtractor):
         )
 
     def _get_version_from_data(self, data: dict) -> str | None:
-        version = data.get('version')
+        version = data.get('version', None)
         return version

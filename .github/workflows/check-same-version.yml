@@ -45,3 +45,11 @@ jobs:
           package_json_path: package.json
           check_setup_py: true
           setup_py_path: setup.py
+          check_r_description: true
+          r_description_path: DESCRIPTION
+          check_composer_json: true
+          composer_json_path: composer.json
+          check_pom_xml: true
+          pom_xml_path: pom.xml
+          check_cargo_toml: true
+          cargo_toml_path: Cargo.toml

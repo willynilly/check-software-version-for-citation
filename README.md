@@ -55,13 +55,22 @@ This workflow runs after the tag or release exists and can report problems, but 
 ✅ Compare software version metadata from:
 - GitHub tag/release
 - `CITATION.cff`
-- `pyproject.toml`
-- `setup.py`
-- `codemeta.json`
-- `.zenodo.json`
-- `package.json`
+- `pyproject.toml` (Python)
+- `setup.py` (Python)
+- Python files with `__version__` assignment
+- `codemeta.json` (General)
+- `.zenodo.json` (General)
+- `package.json` (JS/TypeScript)
+- `composer.json` (PHP)
+- `Cargo.toml` (Rust)
+- `pom.xml` (Java)
+- `DESCRIPTION` (R)
+- `ro-crate-metadata.json` (RO-Crate)
 
-✅ Cross-language support (e.g., Python, JS)
+
+✅ Cross-language support (e.g., Python, R, JS/TypeScript, Java, Rust, PHP)
+
+✅ Cross-standard support for FAIR and Open Science metadata (e.g., CFF, CodeMeta, RO-Crate, Zenodo)
 
 ✅ Lightweight, pure Python — no third-party services  
 
@@ -91,6 +100,14 @@ These files are currently supported out-of-the-box:
 | `package.json`   | Strict SemVer (converted from canonical PEP 440 tag) |
 | `codemeta.json`  | PEP 440 |
 | `.zenodo.json`   | PEP 440 |
+| `composer.json`   | PEP 440 |
+| `Cargo.toml`   | PEP 440 |
+| `pom.xml`   | PEP 440 |
+| R `DESCRIPTION` file   | PEP 440 |
+| Python file with `__version__` assignment   | PEP 440 |
+| `ro-crate-metadata.json` | PEP 440 |
+
+
 
 ---
 
@@ -116,6 +133,23 @@ These files are currently supported out-of-the-box:
 | `--package-json-path`         | `package_json_path`                     | Path to `package.json`               | No    | `package.json`    |
 | `--check-setup-py`            | `check_setup_py`                        | Check `setup.py`? (`true/false`)     | No    | `true`            |
 | `--setup-py-path`             | `setup_py_path`                         | Path to `setup.py`                 | No      | `setup.py`        |
+| `--check-py-version-assignment`            | `check_py_version_assignment`                        | Check Python file with `__version__` assignment? (`true/false`)     | No    | `false`            |
+| `--py-version-assignment-path`             | `py_version_assignment_path`                         | Path to Python file with `__version__` assignment                 | No      | *(empty)*        |
+| `--check-composer-json`        | `check_composer_json`                    | Check `composer.json`? (`true/false`)  | No   | `true`            |
+| `--composer-json-path`         | `composer_json_path`                     | Path to `composer.json`               | No    | `composer.json`    |
+| `--check-ro-crate-metadata-json`        | `check_ro_crate_metadata_json`                    | Check `ro-crate-metadata.json`? (`true/false`)  | No   | `false`            |
+| `--ro-crate-metadata-json-path`         | `ro_crate_metadata_json_path`                     | Path to `ro-crate-metadata.json`               | No    | `ro-crate-metadata.json`    |
+| `--ro-crate-metadata-json-id`         | `ro_crate_metadata_json_id`                     | @id of resource in `ro-crate-metadata.json`               | No    | *(empty)*    |
+| `--check-cargo-toml`      | `check_cargo_toml`                  | Check `Cargo.toml`? (`true/false`)  | No  | `true`            |
+| `--cargo-toml-path`       | `cargo_toml_path`                   | Path to `Cargo.toml`         | No        | `Cargo.toml`  |
+| `--check-r-description`      | `check_r_description`                  | Check R `DESCRIPTION` file? (`true/false`)  | No  | `true`            |
+| `--r-description-path`       | `r_description_path`                   | Path to R `DESCRIPTION` file         | No        | `DESCRIPTION`  |
+| `--check-pom-xml`      | `check_pom_xml`                  | Check `pom.xml`? (`true/false`)  | No  | `true`            |
+| `--pom-xml-path`       | `pom_xml_path`                   | Path to `pom.xml`         | No        | `pom.xml`  |
+
+
+
+
 
 ---
 
@@ -189,6 +223,14 @@ jobs:
           package_json_path: package.json
           check_setup_py: true
           setup_py_path: setup.py
+          check_r_description: true
+          r_description_path: DESCRIPTION
+          check_composer_json: true
+          composer_json_path: composer.json
+          check_pom_xml: true
+          pom_xml_path: pom.xml
+          check_cargo_toml: true
+          cargo_toml_path: Cargo.toml
 ```
 
 ---
@@ -239,13 +281,21 @@ jobs:
           package_json_path: package.json
           check_setup_py: true
           setup_py_path: setup.py
+          check_r_description: true
+          r_description_path: DESCRIPTION
+          check_composer_json: true
+          composer_json_path: composer.json
+          check_pom_xml: true
+          pom_xml_path: pom.xml
+          check_cargo_toml: true
+          cargo_toml_path: Cargo.toml
 ```
 
 ---
 
 ### 2️⃣ Using with pre-commit hooks
 
-You can configure the pre-commit hook to block:
+You can configure a pre-commit hook to block:
 
 ✅ Commits with inconsistent version metadata (`pre-commit`)  
 ✅ Tags with inconsistent version metadata (`pre-push`)
@@ -263,6 +313,11 @@ repos:
 ```
 
 #### Installing the hooks:
+
+```bash
+# Install the pre-commit tool if you have not already installed it
+pip install pre-commit
+```
 
 ```bash
 # Install for both pre-commit and pre-push

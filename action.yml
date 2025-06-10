@@ -73,7 +73,56 @@ inputs:
     description: 'Path to setup.py'
     required: false
     default: 'setup.py'
-  
+  check_r_description:
+    description: 'Check R DESCRIPTION file? (true/false)'
+    required: false
+    default: 'true'
+  r_description_path:
+    description: 'Path to R DESCRIPTION file'
+    required: false
+    default: 'DESCRIPTION'
+  check_composer_json:
+    description: 'Check composer.json? (true/false)'
+    required: false
+    default: 'true'
+  composer_json_path:
+    description: 'Path to composer.json'
+    required: false
+    default: 'composer.json'
+  check_pom_xml:
+    description: 'Check pom.xml? (true/false)'
+    required: false
+    default: 'true'
+  pom_xml_path:
+    description: 'Path to pom.xml'
+    required: false
+    default: 'pom.xml'
+  check_cargo_toml:
+    description: 'Check cargo.toml? (true/false)'
+    required: false
+    default: 'true'
+  cargo_toml_path:
+    description: 'Path to Cargo.toml'
+    required: false
+    default: 'Cargo.toml'
+  check_py_version_assignment:
+    description: 'Check Python file with __version__ assignment? (true/false)'
+    required: false
+    default: 'false'
+  py_version_assignment_path:
+    description: 'Path to Python file with __version__ assignment'
+    required: false
+  check_ro_crate_metadata_json:
+    description: 'Check ro-crate-metadata.json? (true/false)'
+    required: false
+    default: 'false'
+  ro_crate_metadata_json_path:
+    description: 'Path to ro-crate-metadata.json'
+    required: false
+    default: 'ro-crate-metadata.json'
+  ro_crate_metadata_json_id:
+    description: '@id of the resource in ro-crate-metadata.json'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -98,6 +147,19 @@ runs:
         --package-json-path "${{ inputs.package_json_path }}" \
         --check-setup-py "${{ inputs.check_setup_py }}" \
         --setup-py-path "${{ inputs.setup_py_path }}" \
+        --check-r-description "${{ inputs.check_r_description }}" \
+        --r-description-path "${{ inputs.r_description_path }}" \
+        --check-composer-json "${{ inputs.check_composer_json }}" \
+        --composer-json-path "${{ inputs.composer_json_path }}" \
+        --check-pom-xml "${{ inputs.check_pom_xml }}" \
+        --pom-xml-path "${{ inputs.pom_xml_path }}" \
+        --check-cargo-toml "${{ inputs.check_cargo_toml }}" \
+        --cargo-toml-path "${{ inputs.cargo_toml_path }}" \
+        --check-py-version-assignment "${{ inputs.check_py_version_assignment }}" \
+        --py-version-assignment-path "${{ inputs.py_version_assignment_path }}" \
+        --check-ro-crate-metadata-json "${{ inputs.check_ro_crate_metadata_json }}" \
+        --ro-crate-metadata-json-path "${{ inputs.ro_crate_metadata_json_path }}" \
+        --ro-crate-metadata-json-id "${{ inputs.ro_crate_metadata_json_id }}" \
         --check-github-event "${{ inputs.check_github_event }}" \
         --github-event-name "${{ inputs.github_event_name }}" \
         --github-event-ref "${{ inputs.github_event_ref }}" \

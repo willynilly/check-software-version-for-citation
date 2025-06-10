@@ -14,7 +14,7 @@ class Extractor:
         raise NotImplementedError()
     
     def _log_missing_version_error(self, data: dict):
-        logger.error(f"❌ {self.target_name} missing 'version' field")
+        logger.error(f"❌ {self.target_name} missing version metadata")
 
     def _log_found_version_info(self, version: str, data: dict):
         logger.info(f"📖 {self.target_name} version: {version}")
@@ -22,7 +22,7 @@ class Extractor:
     def extract_version(self) -> str | None:
         data: dict = self._get_data()
         version = self._get_version_from_data(data=data)
-        if not version:
+        if version is None:
             if self.target_exists:
                 # only print this error if the target exists
                 self._log_missing_version_error(data=data)
