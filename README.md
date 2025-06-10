@@ -292,6 +292,8 @@ repos:
     rev: v4.0.0  # Use latest tag
     hooks:
       - id: same-version
+        stages: [pre-commit, pre-push]
+
 ```
 
 #### Installing the hooks:

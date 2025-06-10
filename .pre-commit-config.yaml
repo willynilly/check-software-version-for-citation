@@ -6,3 +6,5 @@ repos:
           entry: same-version
           language: system
           pass_filenames: false
+          stages: [pre-commit, pre-push]
+
