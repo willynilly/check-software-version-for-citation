@@ -28,6 +28,13 @@ class GitHubEventExtractor(Extractor):
     def target_cli_parameter_name(self) -> str | None:
         return '--github-event-name'
 
+    def _should_have_version_in_data(self, data: dict):
+        # only the push and release have version metadata
+        # the pull request does not and should not.
+        event_name: str | None = data.get('github_event_name', None)
+        return event_name == 'push' or event_name == 'release'
+
+
     def _get_data(self) -> dict[str, str | None]:
         return self._data
     
@@ -55,7 +62,7 @@ class GitHubEventExtractor(Extractor):
             logger.info(f"📦 Detected GitHub release tag version: {version}")
             return version
         elif event_name == 'pull_request':
-            logger.info("📦 Detected GitHub pull request")
+            logger.info("📦 Detected GitHub pull request. No version expected.")
             return None
         else:
             logger.error(f"❌ Unsupported GitHub event: {event_name}")
