@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ">=3.12" # required by same-version
-          cache: 'pip' # optional
+          cache: 'pip' # optional and only works for Python projects
 
       - name: Run same-version
         uses: willynilly/same-version@v4.0.0

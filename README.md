@@ -201,7 +201,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ">=3.12"
-          cache: 'pip'
 
       - name: Run same-version
         uses: willynilly/same-version@v4.0.0
@@ -250,7 +249,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ">=3.12"
-          cache: 'pip'
 
       - name: Run same-version
         uses: willynilly/same-version@v4.0.0
