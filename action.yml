@@ -105,6 +105,14 @@ inputs:
     description: 'Path to Cargo.toml'
     required: false
     default: 'Cargo.toml'
+  check_setup_cfg:
+    description: 'Check setup.cfg? (true/false)'
+    required: false
+    default: 'true'
+  setup_cfg_path:
+    description: 'Path to setup.cfg'
+    required: false
+    default: 'setup.cfg'
   check_py_version_assignment:
     description: 'Check Python file with __version__ assignment? (true/false)'
     required: false

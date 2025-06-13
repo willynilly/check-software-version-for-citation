@@ -26,7 +26,7 @@ jobs:
           cache: 'pip' # optional and only works for Python projects
 
       - name: Run same-version
-        uses: willynilly/same-version@v5.0.0
+        uses: willynilly/same-version@v5.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -42,6 +42,7 @@ jobs:
           check_zenodo_json: true
           zenodo_json_path: .zenodo.json
           check_package_json: false
+          check_setup_cfg: false
           check_setup_py: false
           check_r_description: false
           check_composer_json: false
