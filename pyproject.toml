@@ -16,20 +16,21 @@ authors = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "Intended Audience :: Education",
-    "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
-    "Intended Audience :: System Administrators",
     "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Topic :: Scientific/Engineering",
     "Topic :: Software Development",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
     "Topic :: Utilities"
 ]
+
 dependencies = ["pyyaml>=6.0.2", "tomli>=2.2.1", "verple>=1.0.0"]
 
 [project.urls]
@@ -55,9 +56,10 @@ pythonpath = [
 [tool.hatch.build]
 include = ["src/same_version/**", "CITATION.cff"]
 license-files = ["LICEN[CS]E*"]
+sources = ["src"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/same_version"]
+packages = ["same_version"]
 
 [project.scripts]
 same-version = "same_version.main:main"
