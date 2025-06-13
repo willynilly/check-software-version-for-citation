@@ -57,6 +57,7 @@ This workflow runs after the tag or release exists and can report problems, but 
 - `CITATION.cff`
 - `pyproject.toml` (Python)
 - `setup.py` (Python)
+- `setup.cfg` (Python)
 - Python files with `__version__` assignment
 - `codemeta.json` (General)
 - `.zenodo.json` (General)
@@ -147,6 +148,7 @@ For those use cases, specialized dependency resolution libraries (e.g. `packagin
 |------------------|-------------------------|----------------|
 | `CITATION.cff`   | PEP 440 / free text     | Verple |
 | `pyproject.toml` | PEP 440                 | Verple |
+| `setup.cfg`       | PEP 440                 | Verple |
 | `setup.py`       | PEP 440                 | Verple |
 | `package.json`   | SemVer                  | Verple |
 | `codemeta.json`  | Free text               | Verple |
@@ -186,6 +188,8 @@ For those use cases, specialized dependency resolution libraries (e.g. `packagin
 | `--package-json-path`         | `package_json_path`                     | Path to `package.json`               | No    | `package.json`    |
 | `--check-setup-py`            | `check_setup_py`                        | Check `setup.py`? (`true/false`)     | No    | `true`            |
 | `--setup-py-path`             | `setup_py_path`                         | Path to `setup.py`                 | No      | `setup.py`        |
+| `--check-setup-cfg`            | `check_setup_cfg`                        | Check `setup.cfg`? (`true/false`)     | No    | `true`            |
+| `--setup-cfg-path`             | `setup_cfg_path`                         | Path to `setup.cfg`                 | No      | `setup.cfg`        |
 | `--check-py-version-assignment`            | `check_py_version_assignment`                        | Check Python file with `__version__` assignment? (`true/false`)     | No    | `false`            |
 | `--py-version-assignment-path`             | `py_version_assignment_path`                         | Path to Python file with `__version__` assignment                 | No      | *(empty)*        |
 | `--check-composer-json`        | `check_composer_json`                    | Check `composer.json`? (`true/false`)  | No   | `true`            |
@@ -255,7 +259,7 @@ jobs:
           python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v5.0.0
+        uses: willynilly/same-version@v5.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -266,6 +270,7 @@ jobs:
           check_citation_cff: true
           check_codemeta_json: true
           check_zenodo_json: true
+          check_setup_cfg: false
           check_setup_py: false
           check_r_description: false
           check_cargo_toml: false
@@ -304,7 +309,7 @@ jobs:
           python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v5.0.0
+        uses: willynilly/same-version@v5.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -315,6 +320,7 @@ jobs:
           check_citation_cff: true
           check_codemeta_json: true
           check_zenodo_json: true
+          check_setup_cfg: false
           check_setup_py: false
           check_r_description: false
           check_cargo_toml: false
@@ -341,7 +347,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v5.0.0  # Use latest tag
+    rev: v5.1.0  # Use latest tag
     hooks:
       - id: same-version
         stages: [pre-commit, pre-push]

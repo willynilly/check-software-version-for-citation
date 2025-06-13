@@ -21,6 +21,7 @@ from same_version.checkers.r_description_checker import RDescriptionChecker
 from same_version.checkers.ro_crate_metadata_json_checker import (
     RoCrateMetadataJsonChecker,
 )
+from same_version.checkers.setup_cfg_checker import SetupCfgChecker
 from same_version.checkers.setup_py_checker import SetupPyChecker
 from same_version.checkers.zenodo_json_checker import ZenodoJsonChecker
 from same_version.extractors.cargo_toml_extractor import CargoTomlExtractor
@@ -42,6 +43,7 @@ from same_version.extractors.r_description_extractor import RDescriptionExtracto
 from same_version.extractors.ro_crate_metadata_json_extractor import (
     RoCrateMetadataJsonExtractor,
 )
+from same_version.extractors.setup_cfg_extractor import SetupCfgExtractor
 from same_version.extractors.setup_py_extractor import SetupPyExtractor
 from same_version.extractors.zenodo_json_extractor import ZenodoJsonExtractor
 from same_version.log_collector import get_log_collector
@@ -62,31 +64,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--zenodo-json-path', default='.zenodo.json', required=False, help='Path to .zenodo.json')
     parser.add_argument('--check-package-json', default=True, required=False, help='Check package.json? (true/false)')
     parser.add_argument('--package-json-path', default='package.json', required=False, help='Path to package.json')
+    parser.add_argument('--check-setup-cfg', default=True, required=False, help='Check setup.cfg? (true/false)')
+    parser.add_argument('--setup-cfg-path', required=False, help='Path to setup.cfg')
     parser.add_argument('--check-setup-py', default=True, required=False, help='Check setup.py? (true/false)')
     parser.add_argument('--setup-py-path', default='setup.py', required=False, help='Path to setup.py')
-    
     parser.add_argument('--check-r-description', default=True, required=False, help='Check R DESCRIPTION file? (true/false)')
     parser.add_argument('--r-description-path', default='DESCRIPTION', required=False, help='Path to R DESCRIPTION file')
-    
     parser.add_argument('--check-composer-json', default=True, required=False, help='Check setup.py? (true/false)')
     parser.add_argument('--composer-json-path', default='composer.json', required=False, help='Path to composer.json')
-    
     parser.add_argument('--check-pom-xml', default=True, required=False, help='Check pom.xml? (true/false)')
     parser.add_argument('--pom-xml-path', default='pom.xml', required=False, help='Path to pom.xml')
-    
     parser.add_argument('--check-nuspec', default=True, required=False, help='Check .nuspec? (true/false)')
     parser.add_argument('--nuspec-path', default='.nuspec', required=False, help='Path to .nuspec')
-    
     parser.add_argument('--check-cargo-toml', default=True, required=False, help='Check Cargo.toml? (true/false)')
     parser.add_argument('--cargo-toml-path', default='Cargo.toml', required=False, help='Path to Cargo.toml')
-
     parser.add_argument('--check-py-version-assignment', default=False, required=False, help='Check Python file with __version__ assignment? (true/false)')
     parser.add_argument('--py-version-assignment-path', required=False, help='Path to Python file with __version__ assignment')
-    
     parser.add_argument('--check-ro-crate-metadata-json', default=False, required=False, help='Check ro-crate-metadata.json? (true/false)')
     parser.add_argument('--ro-crate-metadata-json-path', default='ro-crate-metadata.json', required=False, help='Path to ro-crate-metadata.json')
     parser.add_argument('--ro-crate-metadata-json-id', required=False, help='@id field for the resource in ro-crate-metadata.json')
-
     parser.add_argument('--check-github-event', default=False, required=False, help='Check GitHub events? (true/false)')
     parser.add_argument('--github-event-name', required=False, help='GitHub event name (push/release)')
     parser.add_argument('--github-event-ref', required=False, help='GitHub ref (for push event)')
@@ -130,6 +126,12 @@ def main():
         setup_py_extractor: SetupPyExtractor = SetupPyExtractor(cli_args=cli_args)
         setup_py_checker: SetupPyChecker = SetupPyChecker(extractor=setup_py_extractor, cli_args=cli_args)
         checkers.append(setup_py_checker)
+
+    # setup.cfg
+    if str(getattr(cli_args, 'check_setup_cfg', '') or '').lower() == 'true':
+        setup_cfg_extractor: SetupCfgExtractor = SetupCfgExtractor(cli_args=cli_args)
+        setup_cfg_checker: SetupCfgChecker = SetupCfgChecker(extractor=setup_cfg_extractor, cli_args=cli_args)
+        checkers.append(setup_cfg_checker)
 
     # package.json
     if str(getattr(cli_args, 'check_package_json', '') or '').lower() == 'true':
@@ -190,6 +192,8 @@ def main():
         zenodo_json_extractor: ZenodoJsonExtractor = ZenodoJsonExtractor(cli_args=cli_args)
         zenodo_json_checker: ZenodoJsonChecker = ZenodoJsonChecker(extractor=zenodo_json_extractor, cli_args=cli_args)
         checkers.append(zenodo_json_checker)
+
+    
 
     # Loop through checkers
     logger.info('📦 Checking software version metadata...')
