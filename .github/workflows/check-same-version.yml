@@ -22,11 +22,11 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.12" # required by same-version
+          python-version: ">=3.10" # required by same-version
           cache: 'pip' # optional and only works for Python projects
 
       - name: Run same-version
-        uses: willynilly/same-version@v4.0.0
+        uses: willynilly/same-version@v5.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -46,6 +46,7 @@ jobs:
           check_r_description: false
           check_composer_json: false
           check_pom_xml: false
+          check_nuspec: false
           check_cargo_toml: false
           check_ro_crate_metadata_json: false
           check_py_version_assignment: false

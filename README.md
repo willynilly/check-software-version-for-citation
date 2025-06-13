@@ -64,11 +64,12 @@ This workflow runs after the tag or release exists and can report problems, but 
 - `composer.json` (PHP)
 - `Cargo.toml` (Rust)
 - `pom.xml` (Java)
+- `.nuspec` (.NET/C#/NuGet)
 - `DESCRIPTION` (R)
 - `ro-crate-metadata.json` (RO-Crate)
 
 
-✅ Cross-language support (e.g., Python, R, JS/TypeScript, Java, Rust, PHP)
+✅ Cross-language support (e.g., Python, R, JS/TypeScript, Java, Rust, PHP, C#)
 
 ✅ Cross-standard support for FAIR and Open Science metadata (e.g., CFF, CodeMeta, RO-Crate, Zenodo)
 
@@ -92,22 +93,24 @@ This workflow runs after the tag or release exists and can report problems, but 
 
 These files are currently supported out-of-the-box:
 
-| File             | Parser used |
-|------------------|-------------|
+| File             | Initial Version Format (translates to PEP 440 for comparison) |
+|------------------|-------------------|
 | `CITATION.cff`   | PEP 440 |
 | `pyproject.toml` | PEP 440 |
 | `setup.py`       | PEP 440 |
-| `package.json`   | Strict SemVer (converted from canonical PEP 440 tag) |
+| `package.json`   | Strict SemVer |
 | `codemeta.json`  | PEP 440 |
 | `.zenodo.json`   | PEP 440 |
 | `composer.json`   | PEP 440 |
 | `Cargo.toml`   | PEP 440 |
 | `pom.xml`   | PEP 440 |
+| `.nuspec`   | Strict SemVer |
 | R `DESCRIPTION` file   | PEP 440 |
 | Python file with `__version__` assignment   | PEP 440 |
 | `ro-crate-metadata.json` | PEP 440 |
 
-
+Note SemVer allows arbitrary pre-releases while PEP 440 only allows 3 kinds (a, b, rc).
+During conversion, 
 
 ---
 
@@ -146,6 +149,8 @@ These files are currently supported out-of-the-box:
 | `--r-description-path`       | `r_description_path`                   | Path to R `DESCRIPTION` file         | No        | `DESCRIPTION`  |
 | `--check-pom-xml`      | `check_pom_xml`                  | Check `pom.xml`? (`true/false`)  | No  | `true`            |
 | `--pom-xml-path`       | `pom_xml_path`                   | Path to `pom.xml`         | No        | `pom.xml`  |
+| `--check-nuspec`      | `check_nu_spec`                  | Check `.nuspec`? (`true/false`)  | No  | `true`            |
+| `--nuspec-path`       | `nuspec_path`                   | Path to `.nuspec`         | No        | `.nuspec`  |
 
 
 
@@ -200,10 +205,10 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.12"
+          python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v4.0.0
+        uses: willynilly/same-version@v5.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -219,6 +224,7 @@ jobs:
           check_cargo_toml: false
           check_py_version_assignment: false
           check_pom_xml: false
+          check_nuspec: false
           check_composer_json: false
           check_ro_crate_metadata_json: false
 ```
@@ -248,10 +254,10 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.12"
+          python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v4.0.0
+        uses: willynilly/same-version@v5.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -267,6 +273,7 @@ jobs:
           check_cargo_toml: false
           check_py_version_assignment: false
           check_pom_xml: false
+          check_nuspec: false
           check_composer_json: false
           check_ro_crate_metadata_json: false
 ```
@@ -287,7 +294,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v4.0.0  # Use latest tag
+    rev: v5.0.0  # Use latest tag
     hooks:
       - id: same-version
         stages: [pre-commit, pre-push]
@@ -355,7 +362,7 @@ To set up your development environment:
 ```bash
 git clone https://github.com/willynilly/same-version.git
 cd same-version
-pip install -e .
+pip install -e .[testing,dev]
 pre-commit install -t pre-commit -t pre-push
 pre-commit run --all-files
 ```
