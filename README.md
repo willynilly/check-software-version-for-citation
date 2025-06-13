@@ -50,7 +50,7 @@ This workflow runs after the tag or release exists and can report problems, but 
 
 ## 📋 Features
 
-✅ Canonical tag version parsing (PEP 440)
+✅ Ultra-conservative version normalization and strict equality comparison using [Verple](https://pypi.org/project/verple/)
 
 ✅ Compare software version metadata from:
 - GitHub tag/release
@@ -72,8 +72,6 @@ This workflow runs after the tag or release exists and can report problems, but 
 ✅ Cross-language support (e.g., Python, R, JS/TypeScript, Java, Rust, PHP, C#)
 
 ✅ Cross-standard support for FAIR and Open Science metadata (e.g., CFF, CodeMeta, RO-Crate, Zenodo)
-
-✅ Ultra-conservative version normalization and strict equality comparison using [Verple](https://pypi.org/project/verple/)
 
 ✅ Lightweight, pure Python — no third-party services  
 
