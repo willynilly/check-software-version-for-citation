@@ -10,6 +10,7 @@ from same_version.checkers.citation_cff_checker import CitationCffChecker
 from same_version.checkers.codemeta_json_checker import CodeMetaJsonChecker
 from same_version.checkers.composer_json_checker import ComposerJsonChecker
 from same_version.checkers.github_event_checker import GitHubEventChecker
+from same_version.checkers.nuspec_checker import NuspecChecker
 from same_version.checkers.package_json_checker import PackageJsonChecker
 from same_version.checkers.pom_xml_checker import PomXmlChecker
 from same_version.checkers.py_version_assignment_checker import (
@@ -28,6 +29,7 @@ from same_version.extractors.cli_extractor import CliExtractor
 from same_version.extractors.codemeta_json_extractor import CodeMetaJsonExtractor
 from same_version.extractors.composer_json_extractor import ComposerJsonExtractor
 from same_version.extractors.github_event_extractor import GitHubEventExtractor
+from same_version.extractors.nuspec_extractor import NuspecExtractor
 from same_version.extractors.package_json_extractor import PackageJsonExtractor
 from same_version.extractors.pom_xml_extractor import PomXmlExtractor
 from same_version.extractors.py_version_assignment_extractor import (
@@ -71,6 +73,9 @@ def parse_args() -> argparse.Namespace:
     
     parser.add_argument('--check-pom-xml', default=True, required=False, help='Check pom.xml? (true/false)')
     parser.add_argument('--pom-xml-path', default='pom.xml', required=False, help='Path to pom.xml')
+    
+    parser.add_argument('--check-nuspec', default=True, required=False, help='Check .nuspec? (true/false)')
+    parser.add_argument('--nuspec-path', default='.nuspec', required=False, help='Path to .nuspec')
     
     parser.add_argument('--check-cargo-toml', default=True, required=False, help='Check Cargo.toml? (true/false)')
     parser.add_argument('--cargo-toml-path', default='Cargo.toml', required=False, help='Path to Cargo.toml')
@@ -155,6 +160,12 @@ def main():
         pom_xml_extractor: PomXmlExtractor = PomXmlExtractor(cli_args=cli_args)
         pom_xml_checker: PomXmlChecker = PomXmlChecker(extractor=pom_xml_extractor, cli_args=cli_args)
         checkers.append(pom_xml_checker)
+
+    # .nuspec
+    if str(getattr(cli_args, 'check_nuspec', '') or '').lower() == 'true':
+        nuspec_extractor: NuspecExtractor = NuspecExtractor(cli_args=cli_args)
+        nuspec_checker: NuspecChecker = NuspecChecker(extractor=nuspec_extractor, cli_args=cli_args)
+        checkers.append(nuspec_checker)
 
     # R DESCRIPTION file
     if str(getattr(cli_args, 'check_r_description', '') or '').lower() == 'true':

@@ -1,10 +1,9 @@
 import logging
 from argparse import Namespace
 
-import packaging.version
+from verple.verple import Verple
 
 from same_version.extractors.extractor import Extractor
-from same_version.utils import parse_version_pep440
 
 logger = logging.getLogger(__name__)
 
@@ -14,18 +13,23 @@ class Checker():
         self.extractor = extractor        
         self.cli_args = cli_args
         self._extracted_version: str | None = self.extractor.extract_version()
-
-    def create_pep440_version(self, version_str: str | None) -> packaging.version.Version | None:
-        version_pep440 : packaging.version.Version | None = parse_version_pep440(version_str)
-        return version_pep440
+        self._verple_version: Verple | None = self.create_verple_version(self._extracted_version)
+    
+    def create_verple_version(self, version_str: str | None) -> Verple | None:
+        if version_str is None:
+            return None
+        try:
+            return Verple.parse(version_str)
+        except ValueError:
+            return None
     
     @property
     def target_version_str(self) -> str | None:
         return self._extracted_version
     
     @property
-    def target_version_pep440(self) -> packaging.version.Version | None:
-        return self.create_pep440_version(version_str=self.target_version_str)
+    def target_version(self) -> Verple | None:
+        return self._verple_version
     
     @property
     def target_exists(self) -> bool:
@@ -40,12 +44,11 @@ class Checker():
         return self.extractor.target_cli_parameter_name
     
     def check(self, base_version_str: str | None) -> bool:
-        if not base_version_str:
+        if base_version_str is None:
                 return True
-        base_version_pep440 = self.create_pep440_version(version_str=base_version_str)
+        base_version: Verple | None = self.create_verple_version(version_str=base_version_str)
         if self.target_exists:
-
-            if base_version_pep440 != self.target_version_pep440:
+            if base_version != self.target_version:
                 self._log_version_mismatch(base_version_str=base_version_str)
                 return False
             else:

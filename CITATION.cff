@@ -34,7 +34,7 @@ keywords:
   - metadata
   - harmonization
 license: Apache-2.0
-version: "4.0.0"
+version: "5.0.0"
 date-released: "2025-06-10"
 references:
   - title: Citation File Format
