@@ -73,6 +73,8 @@ This workflow runs after the tag or release exists and can report problems, but 
 
 ✅ Cross-standard support for FAIR and Open Science metadata (e.g., CFF, CodeMeta, RO-Crate, Zenodo)
 
+✅ Ultra-conservative version normalization and strict equality comparison using [Verple](https://pypi.org/project/verple/)
+
 ✅ Lightweight, pure Python — no third-party services  
 
 ✅ Easy to configure via GitHub Action inputs  
@@ -89,28 +91,78 @@ This workflow runs after the tag or release exists and can report problems, but 
 
 ---
 
+## 🔍 How are versions compared?
+
+`same-version` automatically normalizes all detected versions using [Verple](https://pypi.org/project/verple/), which provides a strict, ultra-conservative version model that fully supports PEP 440, SemVer, Calendar Versioning, and hybrid schemes across ecosystems.
+
+- Verple parses versions from many ecosystems (Python, JavaScript, Rust, Java, PHP, R, etc.).
+- Unlike many versioning libraries that attempt to relax equivalence rules, Verple enforces **strict equality**: two versions are only considered equal if every component of the version string matches exactly — including release, pre-release, post-release, dev-release, and local identifiers.
+- This ensures that version mismatches across files are caught even if the differences are subtle (e.g. `1.0.0` vs `1.0.0+build123` are considered different).
+- For ordering (less-than, greater-than comparisons), Verple allows comparisons only when local identifiers are identical. If local identifiers differ, ordering comparisons are rejected to avoid any ambiguity.
+
+---
+
+## 🔬 Why is Verple ultra-conservative?
+
+Many packaging standards (SemVer, PEP 440) have nuanced rules for equality and ordering:
+
+- SemVer ignores build metadata when determining equality or ordering.
+- PEP 440 may allow local identifiers to affect ordering but not equality.
+
+However, for the purpose of cross-file version consistency checking (the core goal of `same-version`), such leniency can mask subtle inconsistencies that may later cause confusion or deployment issues.
+
+By using Verple's conservative model:
+
+✅ Any discrepancy between files will be surfaced explicitly.  
+✅ No silent equivalence is assumed across ecosystems.  
+✅ Comparison logic remains simple, transparent, and safe for reproducibility.
+
+---
+
+## 🔬 When is this behavior helpful?
+
+Verple's strict comparison is **ideal for version consistency checks**, where exact agreement across files is required:
+
+- ✅ Reproducible research outputs
+- ✅ FAIR/Open Science metadata harmonization
+- ✅ Software citation accuracy
+- ✅ Multi-language package version alignment (Python, JS, R, Rust, etc.)
+- ✅ CI/CD pipelines validating metadata consistency
+
+---
+
+## ⚠ When might this behavior be limiting?
+
+Verple’s ultra-conservative model may not be ideal for:
+
+- Dependency resolution (where lenient comparisons are often useful)
+- Compatibility checks (where you care about version ranges, not exact equality)
+- Package managers that intentionally ignore metadata differences
+
+For those use cases, specialized dependency resolution libraries (e.g. `packaging`, `semver`, `dephell`) may be more appropriate.
+
+---
+
 ## 🔍 What files does it check?
 
-These files are currently supported out-of-the-box:
+| File             | Original Version Format | Normalization |
+|------------------|-------------------------|----------------|
+| `CITATION.cff`   | PEP 440 / free text     | Verple |
+| `pyproject.toml` | PEP 440                 | Verple |
+| `setup.py`       | PEP 440                 | Verple |
+| `package.json`   | SemVer                  | Verple |
+| `codemeta.json`  | Free text               | Verple |
+| `.zenodo.json`   | Free text               | Verple |
+| `composer.json`  | PHP Composer (SemVer-like) | Verple |
+| `Cargo.toml`     | Rust Cargo (SemVer-like) | Verple |
+| `pom.xml`        | Maven (loosely SemVer)  | Verple |
+| `.nuspec`        | NuGet (SemVer-like)     | Verple |
+| `DESCRIPTION`    | Free text               | Verple |
+| `__version__` file | PEP 440 (usually)     | Verple |
+| `ro-crate-metadata.json` | Free text | Verple |
 
-| File             | Initial Version Format (translates to PEP 440 for comparison) |
-|------------------|-------------------|
-| `CITATION.cff`   | PEP 440 |
-| `pyproject.toml` | PEP 440 |
-| `setup.py`       | PEP 440 |
-| `package.json`   | Strict SemVer |
-| `codemeta.json`  | PEP 440 |
-| `.zenodo.json`   | PEP 440 |
-| `composer.json`   | PEP 440 |
-| `Cargo.toml`   | PEP 440 |
-| `pom.xml`   | PEP 440 |
-| `.nuspec`   | Strict SemVer |
-| R `DESCRIPTION` file   | PEP 440 |
-| Python file with `__version__` assignment   | PEP 440 |
-| `ro-crate-metadata.json` | PEP 440 |
-
-Note SemVer allows arbitrary pre-releases while PEP 440 only allows 3 kinds (a, b, rc).
-During conversion, 
+> ✅ All formats are normalized automatically to Verple before comparison.
+ 
 
 ---
 
@@ -151,9 +203,6 @@ During conversion,
 | `--pom-xml-path`       | `pom_xml_path`                   | Path to `pom.xml`         | No        | `pom.xml`  |
 | `--check-nuspec`      | `check_nu_spec`                  | Check `.nuspec`? (`true/false`)  | No  | `true`            |
 | `--nuspec-path`       | `nuspec_path`                   | Path to `.nuspec`         | No        | `.nuspec`  |
-
-
-
 
 
 ---
@@ -373,19 +422,22 @@ pre-commit run --all-files
 
 | Tool / Action | Scope / Limitations |
 |---------------|--------------------|
-| [`check-version`](https://github.com/marketplace/actions/check-version) | Typically compares only `package.json` or `pyproject.toml` to Git tag |
-| [`validate-version-tag-action`](https://github.com/marketplace/actions/validate-version-tag-action) | Focused on NPM (`package.json` only), no support for Python or metadata files |
-| [`python-semantic-release`](https://python-semantic-release.readthedocs.io/) | Automated release tool — not designed for cross-file version consistency checking |
-| `check-tag-version` (various community actions) | Usually limited to one file — no multi-ecosystem, no citation support |
+| [`check-version`](https://github.com/marketplace/actions/check-version) | Compares one or two files (e.g. `package.json` or `pyproject.toml`) against Git tag; no cross-file or multi-ecosystem checks |
+| [`validate-version-tag-action`](https://github.com/marketplace/actions/validate-version-tag-action) | Focused on NPM (`package.json` only); no support for Python, metadata standards, or multi-file consistency |
+| [`python-semantic-release`](https://python-semantic-release.readthedocs.io/) | Automated release tool (version bumping, changelogs); not designed for cross-file or cross-language version consistency |
+| `check-tag-version` (various community actions) | Typically limited to checking one file type; lacks support for multiple ecosystems and scientific metadata standards |
 
 ✅ **`same-version` is currently the only GitHub Action that provides:**
 
-- Canonical **PEP 440 tag version parsing**
-- Cross-ecosystem validation:
-    - Python (`pyproject.toml`, `setup.py`)
+- Ultra-conservative version normalization using **Verple** (strict, cross-standard comparison)
+- Cross-ecosystem version consistency checks, including:
+    - Python (`pyproject.toml`, `setup.py`, `__version__`)
     - JavaScript (`package.json`)
-    - Citation / metadata (`CITATION.cff`, `codemeta.json`, `.zenodo.json`)
-- Lightweight, non-invasive — designed to fit **any workflow**
+    - Scientific metadata (`CITATION.cff`, `codemeta.json`, `.zenodo.json`, `ro-crate-metadata.json`)
+    - Other languages (`composer.json`, `Cargo.toml`, `pom.xml`, `.nuspec`, `DESCRIPTION`)
+- Strict equality across files using full version fields: release, pre-release, post-release, dev-release, and local identifiers
+- Lightweight, pure Python implementation — fully offline, no third-party services
+- Flexible use in GitHub Actions, pre-commit hooks, or standalone CLI
 
 ---
 
