@@ -256,7 +256,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.10"
+          python-version: ">=3.10, <3.13" # not tested for 3.13 or higher
 
       - name: Run same-version
         uses: willynilly/same-version@v7.0.0
@@ -306,7 +306,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.10"
+          python-version: ">=3.10, <3.13" # not tested for 3.13 or higher
 
       - name: Run same-version
         uses: willynilly/same-version@v7.0.0
