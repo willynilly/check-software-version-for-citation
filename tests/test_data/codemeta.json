@@ -1,0 +1,15 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "name": "my-dummy-app",
+    "version": "13.9.4",
+    "description": "A dummy app for unit testing.",
+    "author": {
+        "@type": "Person",
+        "name": "Test Author",
+        "email": "author@example.com"
+    },
+    "license": "MIT",
+    "programmingLanguage": "Python",
+    "identifier": "https://github.com/example/my-dummy-app"
+}

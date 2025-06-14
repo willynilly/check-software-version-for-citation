@@ -7,7 +7,8 @@ class PyAstExtractor(FileExtractor):
     
     def _get_data(self) -> dict:
         data = {}
+        data['tree'] = None
         if self.target_file_path and self.target_exists:
             with open(self.target_file_path, 'r', encoding='utf-8') as f:
-                data['tree'] = ast.parse(f.read(), filename=self.target_file_path.resolve())
+                data['tree'] = ast.parse(f.read(), filename=str(self.target_file_path.resolve()))
         return data

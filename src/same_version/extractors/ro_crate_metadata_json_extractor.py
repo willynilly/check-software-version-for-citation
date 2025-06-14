@@ -19,7 +19,7 @@ class RoCrateMetadataJsonExtractor(JsonExtractor):
         version = None
         graph: list | None = data.get('@graph', None)
         if isinstance(graph, list) and graph is not None:
-            id = self.cli_args.get('ro_crate_metadata_json_id', None)
+            id = vars(self.cli_args).get('ro_crate_metadata_json_id', None)
             if id is not None:
                 for resource in graph:
                     resource_id = resource.get('@id', None) 

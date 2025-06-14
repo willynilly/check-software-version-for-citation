@@ -1,3 +1,4 @@
+import configparser
 from argparse import Namespace
 
 from same_version.extractors.ini_extractor import IniExtractor
@@ -15,13 +16,18 @@ class SetupCfgExtractor(IniExtractor):
         )
 
     def _get_version_from_data(self, data: dict) -> str | None:
-        config = data.get('config', None)
+        config: configparser.ConfigParser | None = data.get('config', None)
         if config is None:
             return None
-        metadata = config.get('metadata', None)
-        if metadata is None:
+        
+        if not config.has_section('metadata'):
             return None
-        version = config.get('version', None)
+
+        if not config.has_option('metadata', 'version'):
+            return None
+
+        version = config.get('metadata', 'version')
+
         if isinstance(version, str):
             version = version.strip() 
             

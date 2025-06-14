@@ -51,7 +51,7 @@ from same_version.log_collector import get_log_collector
 logger = logging.getLogger(__name__)
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Check metadata files for consistent software versions using canonical PEP 440 and SemVer")
+    parser = argparse.ArgumentParser(description="Check whether your software version metadata is consistent across key project files.")
     parser.add_argument('--base-version', required=False, help='A base version from which to check')
     parser.add_argument('--fail-for-missing-file', default=False, required=False, help='Fail for any checked file that is missing')
     parser.add_argument('--check-citation-cff', default=True, required=False, help='Check CITATION.cff? (true/false)')

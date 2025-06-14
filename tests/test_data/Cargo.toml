@@ -1,0 +1,10 @@
+[package]
+name = "my-dummy-app"
+version = "10.0.8"
+authors = ["Test Author <author@example.com>"]
+edition = "2021"
+description = "A dummy Rust app for unit testing."
+license = "MIT"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
