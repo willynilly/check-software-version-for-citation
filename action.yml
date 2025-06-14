@@ -120,6 +120,14 @@ inputs:
   py_version_assignment_path:
     description: 'Path to Python file with __version__ assignment'
     required: false
+  check_nuspec:
+    description: 'Check .nuspec? (true/false)'
+    required: false
+    default: 'true'
+  nuspec_path:
+    description: 'Path to .nuspec'
+    required: false
+    default: '.nuspec'
   check_ro_crate_metadata_json:
     description: 'Check ro-crate-metadata.json? (true/false)'
     required: false

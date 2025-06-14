@@ -259,7 +259,7 @@ jobs:
           python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v6.0.0
+        uses: willynilly/same-version@v6.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -309,7 +309,7 @@ jobs:
           python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v6.0.0
+        uses: willynilly/same-version@v6.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -347,7 +347,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v6.0.0  # Use latest tag
+    rev: v6.1.0  # Use latest tag
     hooks:
       - id: same-version
         stages: [pre-commit, pre-push]

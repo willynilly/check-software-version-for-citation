@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "same-version"
-version = "6.0.0"
+version = "6.1.0"
 description = "Automatically ensures your software version metadata is consistent across key project files."
 readme = "README.md"
 requires-python = ">=3.10"
