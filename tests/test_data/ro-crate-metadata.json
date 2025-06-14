@@ -1,0 +1,53 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "@vocab": "https://schema.org/",
+            "ro": "https://w3id.org/ro/terms/"
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "name": "My Dummy RO-Crate for Unit Testing",
+            "description": "A dummy RO-Crate used for metadata unit testing.",
+            "license": {
+                "@id": "https://opensource.org/licenses/MIT"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Test Author",
+                "affiliation": {
+                    "@type": "Organization",
+                    "name": "Example Institute"
+                }
+            },
+            "datePublished": "2025-06-14",
+            "hasPart": {
+                "@id": "software/"
+            }
+        },
+        {
+            "@id": "software/",
+            "@type": "SoftwareSourceCode",
+            "name": "My Dummy App",
+            "version": "7.2.5",
+            "programmingLanguage": {
+                "@type": "ComputerLanguage",
+                "name": "Python"
+            },
+            "license": {
+                "@id": "https://opensource.org/licenses/MIT"
+            },
+            "codeRepository": "https://github.com/example/my-dummy-app"
+        }
+    ]
+}

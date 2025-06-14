@@ -1,0 +1,21 @@
+{
+    "title": "My Dummy App",
+    "version": "4.2.6",
+    "description": "A dummy app for unit testing.",
+    "creators": [
+        {
+            "name": "Test Author",
+            "affiliation": "Example Institute",
+            "orcid": "0000-0000-0000-0000"
+        }
+    ],
+    "license": "MIT",
+    "upload_type": "software",
+    "publication_date": "2024-06-14",
+    "keywords": [
+        "dummy",
+        "test",
+        "unit test"
+    ],
+    "access_right": "open"
+}

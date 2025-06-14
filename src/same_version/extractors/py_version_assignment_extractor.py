@@ -10,7 +10,7 @@ class PyVersionAssignmentExtractor(PyAstExtractor):
     
     def __init__(self, cli_args: Namespace):
         target_cli_parameter_name: str = '--py-version-assignment-path'
-        default_target_name: str = "Python file with __version__ assignment"
+        default_target_name: str = "Python file with __version__ assignment to a literal string"
         super().__init__(
             target_file_path=self._create_target_file_path_from_cli_arg(cli_args=cli_args, cli_arg_parameter=target_cli_parameter_name), 
             default_target_name=default_target_name, 

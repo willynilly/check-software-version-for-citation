@@ -56,9 +56,9 @@ This workflow runs after the tag or release exists and can report problems, but 
 - GitHub tag/release
 - `CITATION.cff`
 - `pyproject.toml` (Python)
-- `setup.py` (Python)
+- `setup.py` (Python, via static analysis only — no execution)
 - `setup.cfg` (Python)
-- Python files with `__version__` assignment
+- Python files with `__version__` assignment (static parsing only — must be assigned directly to a string literal)
 - `codemeta.json` (General)
 - `.zenodo.json` (General)
 - `package.json` (JS/TypeScript)
@@ -259,7 +259,7 @@ jobs:
           python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v5.1.0
+        uses: willynilly/same-version@v6.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -309,7 +309,7 @@ jobs:
           python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v5.1.0
+        uses: willynilly/same-version@v6.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -347,7 +347,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v5.1.0  # Use latest tag
+    rev: v6.0.0  # Use latest tag
     hooks:
       - id: same-version
         stages: [pre-commit, pre-push]

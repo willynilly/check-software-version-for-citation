@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v5.1.0  # Use latest tag
+    rev: v6.0.0  # Use latest tag
     hooks:
       - id: same-version
         stages: [pre-commit, pre-push]

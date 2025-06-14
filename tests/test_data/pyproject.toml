@@ -1,0 +1,14 @@
+[project]
+name = "my-dummy-app"
+version = "8.7.6"
+description = "A dummy app for unit testing."
+authors = [
+    { name = "Test Author", email = "author@example.com" }
+]
+dependencies = [
+    "requests >=2.0.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
