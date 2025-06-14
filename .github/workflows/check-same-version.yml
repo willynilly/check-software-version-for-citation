@@ -26,7 +26,7 @@ jobs:
           cache: 'pip' # optional and only works for Python projects
 
       - name: Run same-version
-        uses: willynilly/same-version@v6.1.0
+        uses: willynilly/same-version@v7.0.0
         with:
           fail_for_missing_file: false
           check_github_event: true
