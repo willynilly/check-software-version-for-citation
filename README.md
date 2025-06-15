@@ -256,10 +256,10 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.10, <3.13" # not tested for 3.13 or higher
+          python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v7.0.0
+        uses: willynilly/same-version@v7.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -306,10 +306,10 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: ">=3.10, <3.13" # not tested for 3.13 or higher
+          python-version: ">=3.10"
 
       - name: Run same-version
-        uses: willynilly/same-version@v7.0.0
+        uses: willynilly/same-version@v7.1.0
         with:
           fail_for_missing_file: false
           check_github_event: true
@@ -347,7 +347,7 @@ Add to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/willynilly/same-version
-    rev: v7.0.0  # Use latest tag
+    rev: v7.1.0  # Use latest tag
     hooks:
       - id: same-version
         stages: [pre-commit, pre-push]

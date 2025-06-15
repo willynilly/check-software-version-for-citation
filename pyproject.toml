@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "same-version"
-version = "7.0.0"
+version = "7.1.0"
 description = "Automatically ensures your software version metadata is consistent across key project files."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -56,11 +56,10 @@ pythonpath = [
 [tool.hatch.build]
 include = ["src/same_version/**", "CITATION.cff"]
 license-files = ["LICEN[CS]E*"]
-sources = ["src"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["same_version"]
-sources = ["src"]
+packages = ["src/same_version"]
+
 
 [project.scripts]
 same-version = "same_version.main:main"
